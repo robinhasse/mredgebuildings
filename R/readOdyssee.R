@@ -30,8 +30,8 @@ readOdyssee <- function(subtype = "households") {
 
   # check subtype
   file <- switch(subtype,
-                 households = "export_enerdata_9259_031531.csv",
-                 services   = "export_enerdata_9259_031431.csv",
+                 households = "export_enerdata_9259_084053.csv",
+                 services   = "export_enerdata_9259_084732.csv",
                  stop("'", subtype, "' is not a valid subtype."))
 
   # read data

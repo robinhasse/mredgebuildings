@@ -19,6 +19,7 @@ Depends:
 Imports:
     dplyr,
     pdftools,
+    purrr,
     quitte,
     readxl,
     rlang,
