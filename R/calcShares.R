@@ -91,6 +91,9 @@ calcShares <- function(subtype = c("carrier_nonthermal",
     # TCEP
     sharesTCEP <- calcOutput("ShareTCEP", aggregate = FALSE) %>%
       as.quitte()
+
+    sharesChina <- calcOutput("ShareChina", aggregate = FALSE) %>%
+      as_tibble(na.rm = TRUE)
   }
 
 
@@ -105,6 +108,10 @@ calcShares <- function(subtype = c("carrier_nonthermal",
     # TCEP
     feTCEP <- readSource("TCEP") %>%
       as.quitte()
+
+    feChina <- readSource("IEA_China") %>%
+      as_tibble(na.rm = TRUE) %>%
+      filter(.data$enduse != "other")
   }
 
 
@@ -168,12 +175,33 @@ calcShares <- function(subtype = c("carrier_nonthermal",
       select(-"regionAgg")
   }
 
-  extrapolateGrowth <- function(df, growth, periods = 1990:2020) {
+  extrapolateGrowth <- function(df, growth, periods = 1990:2022) {
     df %>%
       left_join(growth, by = c("region", "enduse")) %>%
       group_by(across(all_of(c("region", "enduse")))) %>%
       reframe(value = .data[["value"]] * .data[["growth"]]^(periods - .data[["period"]]),
               period = periods)
+  }
+
+  replaceData <- function(data, replace, afterRef) {
+    after <- afterRef %>%
+      getElement("period") %>%
+      max()
+
+    replace <- replace %>%
+      filter(!is.na(.data$value))
+
+    dropDataPoints <- data %>%
+      filter(.data$period > after) %>%
+      semi_join(replace, by = setdiff(colnames(replace), c("value", "period")))
+
+    periods <- unique(data[["period"]])
+    periods <- periods[periods > after]
+
+    data %>%
+      anti_join(dropDataPoints, by = setdiff(colnames(replace), c("value"))) %>%
+      rbind(replace) %>%
+      interpolate_missing_periods(periods)
   }
 
 
@@ -216,12 +244,13 @@ calcShares <- function(subtype = c("carrier_nonthermal",
       # Extrapolate ETP FE Data
       evolutionFactor <- getGrowth(sharesTCEP, regmappingETP)
       sharesFull <- extrapolateGrowth(shares, evolutionFactor) %>%
+        replaceData(sharesChina, afterRef = shares) %>%
         normalize(shareOf)
 
       # Merge Data
       data <- sharesOdyssee %>%
         select("region", "period", "enduse", "value") %>%
-        left_join(sharesFull, by = c("region", "period", shareOf)) %>%
+        full_join(sharesFull, by = c("region", "period", shareOf)) %>%
         mutate(value = ifelse(is.na(.data[["value.x"]]),
                               .data[["value.y"]],
                               .data[["value.x"]])) %>%
@@ -233,7 +262,8 @@ calcShares <- function(subtype = c("carrier_nonthermal",
 
     # Extrapolate ETP FE Data
     evolutionFactor <- getGrowth(feTCEP, regmappingETP)
-    feETPfull <- extrapolateGrowth(feETP, evolutionFactor)
+    feETPfull <- extrapolateGrowth(feETP, evolutionFactor) %>%
+      replaceData(feChina, afterRef = feETP)
 
     if (feOnly) {
       data  <- feETPfull
@@ -256,7 +286,8 @@ calcShares <- function(subtype = c("carrier_nonthermal",
 
     # Interpolate Data
     data <- data %>%
-      interpolate_missing_periods(period = seq(1990, 2020), expand.values = TRUE)
+      interpolate_missing_periods(period = seq(1990, 2022), expand.values = TRUE) %>%
+      filter(.data$period %in% 1990:2022)
 
 
     if (isTRUE(carrierCorrection)) {
@@ -329,6 +360,10 @@ calcShares <- function(subtype = c("carrier_nonthermal",
         select(-"correction", -"RegionCode") %>%
         normalize(shareOf)
     }
+  } else {
+    data <- data %>%
+      interpolate_missing_periods(period = seq(1990, 2022), expand.values = TRUE) %>%
+      filter(.data$period %in% 1990:2022)
   }
 
   if (isFALSE(feOnly)) {
@@ -381,7 +416,6 @@ calcShares <- function(subtype = c("carrier_nonthermal",
 
     description <- "Share of carrier or end use in buildings final energy demand"
   }
-
 
   return(list(x = data,
               weight = weight,
