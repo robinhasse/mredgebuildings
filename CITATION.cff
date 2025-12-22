@@ -2,8 +2,8 @@ cff-version: 1.2.0
 message: If you use this software, please cite it using the metadata from this file.
 type: software
 title: 'mredgebuildings: Prepare data to be used by the EDGE-Buildings model'
-version: 0.15.1
-date-released: '2026-03-12'
+version: 0.15.2
+date-released: '2026-03-16'
 abstract: Prepare data to be used by the EDGE-Buildings model.
 authors:
 - family-names: Hasse

@@ -25,13 +25,13 @@ calcCarrierPrices <- function() {
   lvs <- c("low", "central", "high")
 
   # TODO: revisit unit conversion. This is extremely inefficient # nolint: todo_comment_linter.
-  eur2usd <- function(x, year, iso3c) {
+  .eur2usd <- function(x, year, iso3c) {
     tryCatch(
       GDPuc::convertSingle(x = x,
                            iso3c = iso3c,
                            year = year,
                            unit_in = paste("constant", year, "EUR"),
-                           unit_out = "constant 2017 Int$PPP"),
+                           unit_out = "constant 2017 US$MER"),
       error = function(e) {
         if (grepl("No information in source .+ for countries in 'gdp'\\.",
                   e$message)) {
@@ -70,7 +70,7 @@ calcCarrierPrices <- function() {
     select("region", "period", "value") %>%
     mutate(region = as.character(.data$region),
            carrier = "heat",
-           value = unlist(Map(eur2usd,
+           value = unlist(Map(.eur2usd,
                               x = .data$value,
                               year = .data$period,
                               iso3c = .data$region)), # EUR/GJ to USD/GJ
@@ -84,12 +84,12 @@ calcCarrierPrices <- function() {
   }
   dhPrices <- dhPrices %>%
     group_by(across(all_of(c("region", "carrier")))) %>%
-    reframe(value = extrapolate(.data[["period"]], .data[["value"]],
+    reframe(value = extrapolate(.data$period, .data$value,
                                 max(periodsPast)),
-            period = c(.data[["period"]], max(periodsPast))) %>%
+            period = c(.data$period, max(periodsPast))) %>%
     ungroup() %>%
     interpolate_missing_periods(periods, expand.values = TRUE) %>%
-    filter(.data[["period"]] %in% periods)
+    filter(.data$period %in% periods)
 
 
   ## liquids, elec, gas, coal ====
@@ -113,7 +113,7 @@ calcCarrierPrices <- function() {
   lcu2usd <- data.frame(region = unique(oecdPrices$region)) %>%
     mutate(lcu2usd = GDPuc::toolConvertSingle(1, .data$region, 2015,
                                               unit_in = "current LCU",
-                                              unit_out = "constant 2017 Int$PPP"))
+                                              unit_out = "constant 2017 US$MER"))
   oecdPrices <- oecdPrices %>%
     left_join(lcu2usd, by = "region") %>%
     mutate(value = .data$value / vat * .data$lcu2usd / 1.163E4, # lcu/toe to usd/kWh
@@ -142,20 +142,20 @@ calcCarrierPrices <- function() {
     toolCountryFillAvg(verbosity = 2) %>%
     as.quitte(na.rm = TRUE) %>%
     left_join(carrierMap, by = c(carrier = "carrierECEMF")) %>%
-    filter(.data[["sector"]] %in% c("Res&Com", "Supply"),
-           !is.na(.data[["carrier.y"]]),
-           .data[["component"]] %in% components) %>%
+    filter(.data$sector %in% c("Res&Com", "Supply"),
+           !is.na(.data$carrier.y),
+           .data$component %in% components) %>%
     select("region", "period", carrier = "carrier.y", "component", "value") %>%
     group_by(across(-all_of(c("component", "value")))) %>%
-    summarise(value = sum(.data[["value"]]), .groups = "drop")
+    summarise(value = sum(.data$value), .groups = "drop")
 
   # convert to USD
   # TODO: revisit unit conversion. This is extremely inefficient # nolint: todo_comment_linter.
   eur2usdFactor <- ecemfPrices %>%
     select("region") %>%
     unique() %>%
-    mutate(eur2usd = unlist(Map(eur2usd, x = 1, year = 2020, iso3c = .data$region))) %>%
-    replace_na(list(eur2usd = 1 / usd2eur(year = 2020)))
+    mutate(eur2usd = unlist(Map(.eur2usd, x = 1, year = 2020, iso3c = .data$region))) %>%
+    replace_na(list(eur2usd = eur2usd(year = 2020)))
 
   ecemfPrices <- ecemfPrices %>%
     left_join(eur2usdFactor, by = "region") %>%
@@ -292,7 +292,7 @@ calcCarrierPrices <- function() {
                                "USA; 2020; 0.00017",
                                "USA; 2025; 0.00015") %>%
     interpolate_missing_periods(periodsPast, expand.values = TRUE) %>%
-    filter(.data[["period"]] %in% periodsPast) %>%
+    filter(.data$period %in% periodsPast) %>%
     right_join(toolGetMapping("regionmapping_21_EU11.csv", "regional", "mappingfolder"),
                by = c(region = "RegionCode"),
                relationship = "many-to-many") %>%
@@ -306,9 +306,9 @@ calcCarrierPrices <- function() {
     toolCountryFillAvg() %>%
     as.quitte(na.rm = TRUE) %>%
     interpolate_missing_periods(periodsPast, expand.values = TRUE) %>%
-    filter(.data[["period"]] %in% periodsPast) %>%
+    filter(.data$period %in% periodsPast) %>%
     select("region", "period", "value") %>%
-    mutate(value = .data[["value"]] * 1E-6,  # g/kWh to t/kWh
+    mutate(value = .data$value * 1E-6,  # g/kWh to t/kWh
            unit = "t_CO2/kWh",
            carrier = "elec")
 
@@ -318,7 +318,7 @@ calcCarrierPrices <- function() {
     left_join(carrierMap, by = c(carrier = "carrierECEMF")) %>%
     select(carrier = "carrier.y", "value") %>%
     rbind(data.frame(carrier = "biomod", value = 0)) %>% # set biomod to zero
-    mutate(value = .data[["value"]] * 1E-3,  # t/MWh to t/kWh
+    mutate(value = .data$value * 1E-3,  # t/MWh to t/kWh
            unit = "t_CO2/kWh")
 
   # all emission factors
@@ -349,15 +349,15 @@ calcCarrierPrices <- function() {
              level = lvs,
              fill = list(factor = 1, period = max(periodsFuture))) %>%
     full_join(emi %>%
-                filter(.data[["period"]] == max(periodsPast)) %>%
+                filter(.data$period == max(periodsPast)) %>%
                 select(-"period"),
               by = "carrier",
               relationship = "many-to-many") %>%
-    mutate(value = .data[["value"]] * .data[["factor"]]) %>%
+    mutate(value = .data$value * .data$factor) %>%
     select(-"factor") %>%
     rbind(cross_join(emi, data.frame(level = lvs))) %>%
     interpolate_missing_periods(periods, expand.values = TRUE) %>%
-    filter(.data[["period"]] %in% periods) %>%
+    filter(.data$period %in% periods) %>%
     mutate(variable = "emi",
            unit = "t_CO2/kWh")
 

@@ -39,9 +39,9 @@ calcCostConstruction <- function(granularity = NULL) {
   floorCost <- floorCost %>%
     rename(bs = "standard", floorCost = "value") %>%
     revalue.levels(bs = c(Standard = "low", Advanced = "high")) %>%
-    group_by(.data[["region"]]) %>%
-    reframe(bs = c(.data[["bs"]], "med"),
-            floorCost = c(.data[["floorCost"]], mean(.data[["floorCost"]]))) %>%
+    group_by(.data$region) %>%
+    reframe(bs = c(.data$bs, "med"),
+            floorCost = c(.data$floorCost, mean(.data$floorCost))) %>%
     ungroup()
 
 
@@ -52,7 +52,7 @@ calcCostConstruction <- function(granularity = NULL) {
   heatingCapacity <- calcOutput("HeatingCapacity", swissFormular = TRUE,
                                 aggregate = FALSE) %>%
     as.quitte(na.rm = TRUE) %>%
-    filter(.data[["vin"]] == "2021-2030") %>% # vins after 2010 are identical
+    filter(.data$vin == "2021-2030") %>% # vins after 2010 are identical
     select("region", "typ", "bs", capacity = "value")
 
   # heating system installation cost: USD/kW -> USD/m2
@@ -61,7 +61,7 @@ calcCostConstruction <- function(granularity = NULL) {
                             aggregate = FALSE) %>%
     as.quitte(na.rm = TRUE) %>%
     left_join(heatingCapacity, by = c("region", "typ"), relationship = "many-to-many") %>%
-    mutate(heatingCost = .data[["value"]] * .data[["capacity"]]) %>%
+    mutate(heatingCost = .data$value * .data$capacity) %>%
     select("region", "period", "bs", "hs", "typ", "heatingCost")
 
 
@@ -70,7 +70,7 @@ calcCostConstruction <- function(granularity = NULL) {
 
   constructionCost <- inner_join(floorCost, heatingCost, by = c("region", "bs"),
                                  relationship = "many-to-many") %>%
-    mutate(value = .data[["floorCost"]] + .data[["heatingCost"]]) %>%
+    mutate(value = .data$floorCost + .data$heatingCost) %>%
     select("region", "period", "bs", "hs", "typ", "value")
 
   # convert to magpie object
@@ -89,7 +89,7 @@ calcCostConstruction <- function(granularity = NULL) {
 
 
   return(list(x = agg$x,
-              unit = "USD2020/m2",
+              unit = "USD2017/m2",
               weight = agg$weight,
               min = 0,
               description = "Floor-space specific cost of new costruction"))

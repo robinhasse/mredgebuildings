@@ -18,7 +18,7 @@ calcCostDemolition <- function() {
 
   return(list(x = x,
               weight = feBuildings,
-              unit = "USD2020/m2",
+              unit = "USD2017/m2",
               min = 0,
               description = "Floor-space specific demolition cost"))
 }

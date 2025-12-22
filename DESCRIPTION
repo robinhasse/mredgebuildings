@@ -1,8 +1,8 @@
 Type: Package
 Package: mredgebuildings
 Title: Prepare data to be used by the EDGE-Buildings model
-Version: 0.15.1
-Date: 2026-03-12
+Version: 0.15.2
+Date: 2026-03-16
 Authors@R: c(
     person("Robin", "Hasse", , "robin.hasse@pik-potsdam.de", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-1818-3186")),

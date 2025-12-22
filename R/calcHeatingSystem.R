@@ -32,13 +32,12 @@ calcHeatingSystem <- function(subtype = c("Purchasing cost", "Efficiency"),
     x %>%
       pivot_wider(names_from = "subsector") %>%
       mutate(Services = ifelse(
-        is.na(.data[["Services"]]),
-        .data[["Residential"]] *
-          ifelse(.data[["variable"]] == "Purchasing cost", 0.9, 1),
-        .data[["Services"]]
+        is.na(.data$Services),
+        .data$Residential * ifelse(.data$variable == "Purchasing cost", 0.9, 1),
+        .data$Services
       )) %>%
       pivot_longer(c("Residential", "Services"), names_to = "subsector") %>%
-      filter(!is.na(.data[["value"]]))
+      filter(!is.na(.data$value))
   }
 
   # COP data of heat pumps in EU_ReferenceScenario is low compared to other sources:
@@ -78,7 +77,7 @@ calcHeatingSystem <- function(subtype = c("Purchasing cost", "Efficiency"),
     read.csv(comment.char = "") %>%
     select(-"comment") %>%
     pivot_longer(matches("^weight"), names_to = "typ", values_to = "weight") %>%
-    mutate(typ = sub("^weight(.*)$", "\\1", .data[["typ"]])) %>%
+    mutate(typ = sub("^weight(.*)$", "\\1", .data$typ)) %>%
     right_join(unique(hsMap["hs"]), by = c(technologyBRICK = "hs"))
 
   if (any(is.na(euRefMap))) {
@@ -105,17 +104,17 @@ calcHeatingSystem <- function(subtype = c("Purchasing cost", "Efficiency"),
     as.quitte(na.rm = TRUE) %>%
     select(-"period") %>%
     completeServices() %>%
-    filter(.data[["variable"]] == subtype,
-           .data[["level"]] %in% c("Current", "central")) %>%
+    filter(.data$variable == subtype,
+           .data$level %in% c("Current", "central")) %>%
     adjustHpEfficiency(subtype) %>%
     left_join(typMap, by = "subsector", relationship = "many-to-many") %>%
     left_join(periodMap, by = "pointintime") %>%
     left_join(euRefMap, by = c("typ", "technology"), relationship = "many-to-many") %>%
     select("region", "period", hs = "technologyBRICK", "typ", "unit", "value",
            "weight") %>%
-    filter(!is.na(.data[["hs"]])) %>%
+    filter(!is.na(.data$hs)) %>%
     group_by(across(-all_of(c("value", "weight")))) %>%
-    summarise(value = sum(proportions(.data[["weight"]]) * .data[["value"]]),
+    summarise(value = sum(proportions(.data$weight) * .data$value),
               .groups = "drop")
 
   # TODO: find data for biom, libo, reel and sobo in Com # nolint: todo_comment_linter
@@ -134,7 +133,7 @@ calcHeatingSystem <- function(subtype = c("Purchasing cost", "Efficiency"),
                                     value = "h2MarkUp",
                                     expand.values = TRUE) %>%
         right_join(data, by = c("period", "hs")) %>%
-        mutate(value = .data[["value"]] + replace_na(.data[["h2MarkUp"]], 0)) %>%
+        mutate(value = .data$value + replace_na(.data$h2MarkUp, 0)) %>%
         select(-"h2MarkUp")
 
       # As a first approach to heat pump subsidy, we assume a general subsidy on
@@ -143,10 +142,12 @@ calcHeatingSystem <- function(subtype = c("Purchasing cost", "Efficiency"),
         mutate(value = .data$value * ifelse(.data$hs == "ehp1", 0.7, 1))
 
       # unit conversion EUR/kW -> USD/kW
-      usd2eur <- usd2eur()
+      eur2usd <- GDPuc::toolConvertSingle(1, "DEU", 2015,
+                                          unit_in = "current LCU",
+                                          unit_out = "constant 2017 US$MER")
       data <- data %>%
-        mutate(value = .data[["value"]] / usd2eur)
-      unit <- "USD2020/kW"
+        mutate(value = .data$value * eur2usd)
+      unit <- "USD2017/kW"
     },
     `Efficiency` = {
       unit <- "1"

@@ -7,7 +7,7 @@
 https://odyssee.enerdata.net/database/
 }
 \usage{
-readOdyssee(subtype = "250109")
+readOdyssee(subtype = "260305")
 }
 \arguments{
 \item{subtype}{dataset version}

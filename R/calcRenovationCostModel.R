@@ -61,18 +61,18 @@ calcRenovationCostModel <- function() {
     setNames("population") %>%
     as.quitte() %>%
     select(-"model", -"scenario") %>%
-    mutate(variable = as.character(.data[["variable"]]), unit = "million cap")
+    mutate(variable = as.character(.data$variable), unit = "million cap")
   gdppop <- calcOutput("GDPpc", scenario = "SSP2", aggregate = FALSE, average2020 = FALSE) %>%
     setNames("gdppop") %>%
     as.quitte() %>%
     select(-"model", -"scenario") %>%
-    mutate(variable = as.character(.data[["variable"]]), unit = "USD2017/cap")
+    mutate(variable = as.character(.data$variable), unit = "USD2017/cap")
   gdppopAvg <- rbind(gdppop, pop) %>%
     select(-"unit") %>%
-    filter(.data[["period"]] %in% periodsReport) %>%
+    filter(.data$period %in% periodsReport) %>%
     pivot_wider(names_from = "variable") %>%
-    group_by(.data[["region"]]) %>%
-    summarise(value = sum(proportions(.data[["population"]]) * .data[["gdppop"]]),
+    group_by(.data$region) %>%
+    summarise(value = sum(proportions(.data$population) * .data$gdppop),
               variable = "gdppop",
               unit = "USD2017/cap",
               .groups = "drop") %>%
@@ -85,18 +85,18 @@ calcRenovationCostModel <- function() {
     mselect(variable = names(typeCode)) %>%
     as.quitte(na.rm = TRUE) %>%
     select(-"model", -"scenario", -"unit") %>%
-    filter(.data[["period"]] %in% periodsReport) %>%
+    filter(.data$period %in% periodsReport) %>%
     revalue.levels(variable = typeCode)
   typeShare <- typeShare %>%
     group_by(across(all_of(c("period", "variable")))) %>%
     reframe(region = setdiff(gdppop$region, typeShare$region),
-            value = sum(.data[["value"]])) %>%
+            value = sum(.data$value)) %>%
     rbind(typeShare)
   typeShare <- typeShare %>%
     group_by(across(all_of(c("region", "variable")))) %>%
-    summarise(value = sum(.data[["value"]]), .groups = "drop") %>%
-    group_by(.data[["region"]]) %>%
-    mutate(value = proportions(.data[["value"]])) %>%
+    summarise(value = sum(.data$value), .groups = "drop") %>%
+    group_by(.data$region) %>%
+    mutate(value = proportions(.data$value)) %>%
     pivot_wider(names_from = "variable", values_from = "value")
 
   # FE demand in residential and commercial buildings as weight
@@ -118,8 +118,8 @@ calcRenovationCostModel <- function() {
   # dependent variable: specific investment (y)
   trainingData <- renovation %>%
     select(-"unit") %>%
-    filter(.data[["renovation"]] %in% energyRelatedRenovations,
-           .data[["variable"]] %in% names(modelVariables)) %>%
+    filter(.data$renovation %in% energyRelatedRenovations,
+           .data$variable %in% names(modelVariables)) %>%
     revalue.levels(variable = modelVariables) %>%
     pivot_wider(names_from = "variable", values_from = "value") %>%
     select("region", "subsector", "x", "y") %>%
@@ -135,7 +135,7 @@ calcRenovationCostModel <- function() {
   for (subsec in subsectors) {
 
     data <- trainingData %>%
-      filter(.data[["subsector"]] == subsec)
+      filter(.data$subsector == subsec)
 
     # global linear model with intercept
     globalLinearModel <- lm("y~x", data)
@@ -143,7 +143,7 @@ calcRenovationCostModel <- function() {
 
     # regional scaling to best match regional data
     data <- data %>%
-      group_by(.data[["region"]]) %>%
+      group_by(.data$region) %>%
       group_modify(function(dataReg, reg) {
         regionalScaleModel <- lm("y~yGlobalPredict - 1", dataReg)
         dataReg[["factor"]] <- coef(regionalScaleModel)
@@ -169,7 +169,7 @@ calcRenovationCostModel <- function() {
     # correction factor to reach best regional fit (independent of GDP/POP)
     correctionFactor <- data %>%
       mutate(subsector = subsec,
-             correct   = .data[["factor"]] / .data[["factorPredict"]]) %>%
+             correct   = .data$factor / .data$factorPredict) %>%
       select("subsector", "region", "correct") %>%
       unique() %>%
       rbind(correctionFactor)
@@ -182,7 +182,7 @@ calcRenovationCostModel <- function() {
   # predict specific investment based on GDP/POP and extrapolate to other
   # regions and periods
   specificInvest <- gdppop %>%
-    filter(.data[["period"]] %in% periods) %>%
+    filter(.data$period %in% periods) %>%
     select("region", "period", gdppop = "value") %>%
     merge(data.frame(subsector = subsectors)) %>%
     left_join(modelCalibration %>%
@@ -191,10 +191,10 @@ calcRenovationCostModel <- function() {
               by = "subsector") %>%
     left_join(correctionFactor,
               by = c("subsector", "region")) %>%
-    mutate(factor    = .data[["scaling_Asym"]] * (1 - exp(-.data[["scaling_slope"]] * .data[["gdppop"]])),
-           correct   = replace_na(.data[["correct"]], 1),
-           intercept = .data[["global_intercept"]] * .data[["factor"]] * .data[["correct"]],
-           slope     = .data[["global_slope"]]  * .data[["factor"]] * .data[["correct"]]) %>%
+    mutate(factor    = .data$scaling_Asym * (1 - exp(-.data$scaling_slope * .data$gdppop)),
+           correct   = replace_na(.data$correct, 1),
+           intercept = .data$global_intercept * .data$factor * .data$correct,
+           slope     = .data$global_slope  * .data$factor * .data$correct) %>%
     select("region", "period", "subsector", "intercept", "slope") %>%
     pivot_longer(c("intercept", "slope"),
                  names_to = "variable", values_to = "value")
@@ -206,16 +206,16 @@ calcRenovationCostModel <- function() {
   ## Disggregate building types ====
 
   specificInvest <- specificInvest %>%
-    filter(.data[["subsector"]] == "residential") %>%
+    filter(.data$subsector == "residential") %>%
     left_join(typeShare, by = "region") %>%
-    mutate(MFH = .data[["value"]] / (.data[["SFH"]] * costRatio + .data[["MFH"]]),
-           SFH = costRatio * .data[["MFH"]]) %>%
+    mutate(MFH = .data$value / (.data$SFH * costRatio + .data$MFH),
+           SFH = costRatio * .data$MFH) %>%
     select(-"value") %>%
     pivot_longer(c("SFH", "MFH"),
                  names_to = "typ", values_to = "value") %>%
     select(-"subsector") %>%
     rbind(specificInvest %>%
-            filter(.data[["subsector"]] == "commercial") %>%
+            filter(.data$subsector == "commercial") %>%
             select(-"subsector") %>%
             mutate(typ = "Com"))
 
@@ -223,10 +223,9 @@ calcRenovationCostModel <- function() {
   ## Unit conversion ====
 
   # cost data was surveyed 2014 - 2017 but we use 2020 for currency conversion
-  usd2eur <- usd2eur()
   specificInvest <- specificInvest %>%
-    mutate(value = .data[["value"]] / usd2eur)
-  unit <- "USD2020/m2"
+    mutate(value = .data$value * eur2usd(year = 2020))
+  unit <- "USD2017/m2"
 
 
 

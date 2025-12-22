@@ -105,7 +105,7 @@ calcCostRenovationBS <- function(granularity = NULL) {
 
 
   return(list(x = agg$x,
-              unit = "USD2020/m2",
+              unit = "USD2017/m2",
               weight = agg$weight,
               min = 0,
               description = "Floor-space specific cost of building shell retrofit"))
