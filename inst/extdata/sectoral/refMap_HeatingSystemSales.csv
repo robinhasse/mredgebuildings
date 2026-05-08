@@ -4,6 +4,6 @@ ehp1,all,ehp1,,Heat pump
 biom,all,biom,,Biomass heater
 sobo,all,sobo,,Coal heater
 gabo,all,gabo,,Gas heater
-dihe,all,dihe,,District heating
+# dihe,all,dihe,removed because of low trust in numbers,District heating
 libo,all,libo,,Liquids heater
 h2bo,all,h2bo,not in the data and filled with zero,Hydrogen heater
