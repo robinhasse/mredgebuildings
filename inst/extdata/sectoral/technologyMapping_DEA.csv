@@ -1,0 +1,25 @@
+hs;typ;tech;buildingType;buildingVin
+biom;SFH;Biomass boiler, automatic stoking , wood pellets or wood chips;SFH;new
+dihe;SFH;Indirect district heating substation;SFH;new
+ehp1;SFH;Heat pump, Air-to-water;SFH;new
+gabo;SFH;Natural gas boiler;SFH;new
+h2bo;SFH;Natural gas boiler;SFH;new
+libo;SFH;Oil boiler (mineral oil fired, < 10 % FAME);SFH;existing
+reel;SFH;Electric boiler;SFH;new
+sobo;SFH;Biomass boiler, automatic stoking , wood pellets or wood chips;SFH;existing
+biom;MFH;Biomass boiler, automatic stoking , wood pellets or wood chips;MFH;new
+dihe;MFH;Indirect district heating substation;MFH;new
+ehp1;MFH;Heat pump, Air-to-water;MFH;new
+gabo;MFH;Natural gas boiler;MFH;new
+h2bo;MFH;Natural gas boiler;MFH;new
+libo;MFH;Oil boiler (mineral oil fired, < 10 % FAME);MFH;existing
+reel;MFH;Electric boiler;MFH;new
+sobo;MFH;Biomass boiler, automatic stoking , wood pellets or wood chips;MFH;existing
+biom;Com;Biomass boiler, automatic stoking , wood pellets or wood chips;MFH;new
+dihe;Com;Indirect district heating substation;MFH;new
+ehp1;Com;Heat pump, Air-to-water;MFH;new
+gabo;Com;Natural gas boiler;MFH;new
+h2bo;Com;Natural gas boiler;MFH;new
+libo;Com;Oil boiler (mineral oil fired, < 10 % FAME);MFH;existing
+reel;Com;Electric boiler;MFH;new
+sobo;Com;Biomass boiler, automatic stoking , wood pellets or wood chips;MFH;existing
