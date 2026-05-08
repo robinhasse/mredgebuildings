@@ -126,83 +126,39 @@ calcLifetimeParams <- function(subtype, granularity = NULL) {
     heatingSystem = {
 
 
-      ### EIA equipment data ####
+      ### DEA technology catalogue ####
 
-      # (values taken directly from PDF notes)
-      # TODO: write a read function for this rich EIA data # nolint: todo_comment_linter.
+      dea <- readSource("DEA_TechnologyCatalogues",
+                        subtype = "individualHeatingPlants") %>%
+        mselect(period = "y2025",
+                region = "DNK",
+                variable = "Technical economic lifetime") %>%
+        as_tibble() %>%
+        select(-"variable", -"unit")
 
-      # technologies already given with Weibull parameters
-      # delay is approximated by adding it to the scale
-      params <- inline.data.frame(
-        "subsector;   hs;   scale; shape",
-        "Res;         ehp1; 16.88;     2" # Residential Air-Source Heat Pumps
-      )
-
-      # technologies given with typical ranges
-      ranges <- inline.data.frame(
-        "subsector;   hs;   from; to",
-        "Res;         biom;   12; 25", # Residential Cordwood / Wood Pallet Stoves
-        "Res;         h2bo;   20; 30", # Residential Gas-Fired Boilers
-        "Res;         gabo;   20; 30", # Residential Gas-Fired Boilers
-        "Res;         reel;   15; 30", # Residential Electric Resistance (Unit) Heaters
-        "Res;         libo;   18; 28"  # Residential Oil-Fired Boilers
-      )
-
-      # technologies given only with central estimate
-      central <- inline.data.frame(
-        "subsector; hs;    mean",
-        "Com;       ehp1;    21", # Commercial Rooftop Heat Pumps
-        "Com;       h2bo;    25", # Commercial Gas-Fired Boilers
-        "Com;       gabo;    25", # Commercial Gas-Fired Boilers
-        "Com;       reel;    18", # Commercial Electric Resistance Heaters
-        "Com;       libo;    25", # Commercial Oil-Fired Boilers
-        "Res;       dihe;    30", # value assumed, not from EIA
-        "Com;       dihe;    30"  # value assumed, not from EIA
-      )
+      ### map to technologies ####
+      techMap <- toolGetMapping("technologyMapping_DEA.csv",
+                                type = "sectoral",
+                                where = "mredgebuildings")
+      colsMapped <- c("tech", "buildingType", "buildingVin")
+      deaMapped <- dea %>%
+        right_join(techMap,
+                   by = colsMapped,
+                   relationship = "many-to-many") %>%
+        select(-all_of(c("region", "period", colsMapped)))
 
 
       ### derive Weibull parameters ####
 
-      # we assume probabilities of the lower and upper value respectively
-      ranges <- weibullFromRange(ranges, probFrom = 0.2, probTo = 0.8)
-      params <- rbind(params, ranges[, colnames(params)])
-
-      # average coefficient of variance (cv)
-      cv <- params %>%
-        mutate(var = .data$scale^2 * (gamma(1 + 2 / .data$shape) -
-                                        gamma(1 + 1 / .data$shape)^2),
-               mean = .data$scale * gamma(1 + 1 / .data$shape),
-               cv = sqrt(.data$var) / .data$mean) %>%
-        getElement("cv") %>%
-        mean()
-
-      # for central values, we assume they have the average cv of the other
-      # technologies' lifetime distribution
-      central <- central %>%
-        mutate(sd = cv * .data$mean)
-      central <- do.call(rbind,
-                         Map(approxWeibull, m = central$mean, s = central$sd)) %>%
-        cbind(central) %>%
-        mutate(shape = as.numeric(.data$shape),
-               scale = as.numeric(.data$scale))
-
-      params <- rbind(params, central[, colnames(params)])
+      # find Weibull distributions with the central value as mean
+      # assume that lower and upper estimates are two standard deviations apart
+      params <- deaMapped %>%
+        pivot_wider(names_from = "estimate") %>%
+        mutate(params = Map(approxWeibull, m = .data$ctrl, s = (.data$upper - .data$lower) / 2),
+               .keep = "unused") %>%
+        tidyr::unnest_longer("params", indices_to = "variable", values_to = "value")
 
 
-      ### assume missing values ####
-
-      # assume residential biomass value for commercial
-      params <- params %>%
-        rbind(params %>%
-                filter(.data$subsector == "Res",
-                       .data$hs == "biom") %>%
-                mutate(subsector = "Com"))
-
-      # assume biomass values for coal
-      params <- params %>%
-        rbind(params %>%
-                filter(.data$hs == "biom") %>%
-                mutate(hs = "sobo"))
 
       # all technologies included?
       hs <- toolGetMapping("dim_hs.csv",
@@ -215,19 +171,9 @@ calcLifetimeParams <- function(subtype, granularity = NULL) {
 
 
 
-      ### map to building types ####
-      typMap <- toolGetMapping("dim_typ.csv",
-                               type = "sectoral", where = "brick") %>%
-        pull("subsector", "typ")
       params <- params %>%
-        pivot_longer(c("scale", "shape"), names_to = "variable") %>%
-        as.magpie(datacol = "value")
-
-      params <- do.call(mbind, lapply(names(typMap), function(typ) {
-        params %>%
-          mselect(subsector = typMap[typ], collapseNames = TRUE) %>%
-          add_dimension(add = "typ", nm = typ)
-      }))
+        select("typ", "hs", "variable", "value") %>%
+        as.magpie()
 
       description <- "Weibull lifetime distribution parameters for heating systems"
     },
