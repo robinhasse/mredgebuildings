@@ -615,7 +615,7 @@ calcMatchingReference <- function(subtype) {
         select("region", "period", "variable", "value")
 
       minVal <- 0
-      minVal <- 1
+      maxVal <- 1
       unit <- "1"
       description <- "Share of heating systems in sales"
 
