@@ -1,20 +1,4 @@
 variable,.variable,typ,hs,.comment,.color
-Res_libo,nbrlprpet*surlog,SFH,libo,,Liquids heater
-Res_libo,nbrlprpet*surlog,MFH,libo,,Liquids heater
-Res_gabo,nbrlprgaz*surlog,SFH,gabo,,Gas heater
-Res_gabo,nbrlprgaz*surlog,MFH,gabo,,Gas heater
-Res_dihe,nbrlprvap*surlog,SFH,dihe,,District heating
-Res_dihe,nbrlprvap*surlog,MFH,dihe,,District heating
-Res_biom,nbrlprboi*surlog,SFH,biom,,Biomass heater
-Res_biom,nbrlprboi*surlog,MFH,biom,,Biomass heater
-Res_elec,nbrlprele*surlog,SFH,ehp1,,Electricity
-Res_elec,nbrlprele*surlog,MFH,ehp1,,Electricity
-Res_elec,nbrlprele*surlog,SFH,reel,,Electricity
-Res_elec,nbrlprele*surlog,MFH,reel,,Electricity
-Res_ehp1,nbrlprelehp*surlog,SFH,ehp1,,Heat pump
-Res_ehp1,nbrlprelehp*surlog,MFH,ehp1,,Heat pump
-Res_reel,nbrlprelerh*surlog,SFH,reel,,Resistive electric
-Res_reel,nbrlprelerh*surlog,MFH,reel,,Resistive electric
 MFH_libo,nbriprpet*suripr,MFH,libo,,Liquids heater
 MFH_gabo,nbriprgaz*suripr,MFH,gabo,,Gas heater
 MFH_dihe,nbriprvap*suripr,MFH,dihe,,District heating

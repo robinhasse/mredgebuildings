@@ -1,0 +1,17 @@
+variable,.variable,typ,hs,.comment,.color
+Res_libo,nbrlprpet*surlog,Res,libo,,Liquids heater
+Res_libo,nbrlprpet*surlog,Res,libo,,Liquids heater
+Res_gabo,nbrlprgaz*surlog,Res,gabo,,Gas heater
+Res_gabo,nbrlprgaz*surlog,Res,gabo,,Gas heater
+Res_dihe,nbrlprvap*surlog,Res,dihe,,District heating
+Res_dihe,nbrlprvap*surlog,Res,dihe,,District heating
+Res_biom,nbrlprboi*surlog,Res,biom,,Biomass heater
+Res_biom,nbrlprboi*surlog,Res,biom,,Biomass heater
+Res_elec,nbrlprele*surlog,Res,ehp1,,Electricity
+Res_elec,nbrlprele*surlog,Res,ehp1,,Electricity
+Res_elec,nbrlprele*surlog,Res,reel,,Electricity
+Res_elec,nbrlprele*surlog,Res,reel,,Electricity
+Res_ehp1,nbrlprelehp*surlog,Res,ehp1,,Heat pump
+Res_ehp1,nbrlprelehp*surlog,Res,ehp1,,Heat pump
+Res_reel,nbrlprelerh*surlog,Res,reel,,Resistive electric
+Res_reel,nbrlprelerh*surlog,Res,reel,,Resistive electric
