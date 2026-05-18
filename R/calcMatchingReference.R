@@ -295,9 +295,28 @@ calcMatchingReference <- function(subtype) {
     },
 
 
-    ## OdysseeIDEES_heating ====
+    ## OdysseeIDEES_heating_typ ====
 
-    `OdysseeIDEES_heating` = {
+    `OdysseeIDEES_heating_typ` = {
+      data <- calcOutput("OdysseeStock", interpolate = TRUE, aggregate = FALSE) %>%
+        as.quitte()
+      data <- refMap %>%
+        select("variable", ".variable") %>%
+        unique() %>%
+        left_join(data, by = c(.variable = "variable")) %>%
+        select(-".variable") %>%
+        mutate(value = .data[["value"]] / 1E6) # m2 -> million m2
+
+      minVal <- 0
+      unit <- "million m2"
+      description <- "Residential building stock floor space from Odyssee extrapolated with IDEES"
+
+    },
+
+
+    ## OdysseeIDEES_heating_sec ====
+
+    `OdysseeIDEES_heating_sec` = {
       data <- calcOutput("OdysseeStock", interpolate = TRUE, aggregate = FALSE) %>%
         as.quitte()
       data <- refMap %>%
@@ -404,6 +423,38 @@ calcMatchingReference <- function(subtype) {
 
       unit <- "million m2/yr"
       description <- "flow of newly constructed buildings"
+
+    },
+
+
+    ## Odyssee_heatingShare ====
+
+    Odyssee_heatingShare = {
+      odyssee <- odyssee %>%
+        select("region", "period", "variable", "value")
+      uniqueVarsInGroup <- function(rvg) {
+        unique(refMap[refMap$refVarGroup == unique(rvg), "variable"])
+      }
+      data <- refMap %>%
+        left_join(odyssee, by = c(.code = "variable")) %>%
+        left_join(odyssee, by = c(.codeTotal = "variable", "region", "period"),
+                  suffix = c("", "Total")) %>%
+        group_by(across(all_of(c("region", "period", "refVarGroup", "variable")))) %>%
+        summarise(across(matches("value"), sum), .groups = "drop") %>%
+        ungroup() %>%
+        group_by(across(all_of(c("region", "period", "refVarGroup")))) %>%
+        mutate(value = ifelse(all(uniqueVarsInGroup(.data$refVarGroup) %in% .data$variable),
+                              proportions(.data$value),
+                              .data$value / .data$valueTotal)) %>%
+        ungroup() %>%
+        filter(.data$value > 0) %>%
+        select(-"valueTotal") %>%
+        as.quitte()
+
+      # TODO: weights
+
+      unit <- "1"
+      description <- "share of heating systems in the stock"
 
     },
 

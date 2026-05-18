@@ -22,7 +22,8 @@ CensusHub_typ_vin;TRUE;TRUE;100;
 CensusHub_vin;TRUE;TRUE;100;
 OdysseeIDEES_typ;FALSE;TRUE;100;
 OdysseeIDEES_sec;FALSE;TRUE;100;
-OdysseeIDEES_heating;FALSE;TRUE;50;
+OdysseeIDEES_heating_sec;FALSE;TRUE;100;
+OdysseeIDEES_heating_typ;FALSE;TRUE;50;
 HeatingSystemSales;TRUE;TRUE;200;applying appliance shares as floor area shares is a simplification - one could use type-specific weights
 VHK;TRUE;TRUE;200;applying appliance shares as floor area shares is a simplification - one could/should use type-specific weights
 EHI_statusQuo;TRUE;FALSE;100;This is extrapolated far beyond the original data
