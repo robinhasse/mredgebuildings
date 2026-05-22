@@ -42,6 +42,15 @@ calcHeatingSystemSales <- function() {
     .removeNADims() %>%
     .mapToBRICK(mapEHPA, from = "hpType")
 
+  # capacity
+  cap <- readSource("VHK", subtype = "2019_spaceHeating.Task2")
+
+  # DEU sales by new construction and renovation
+  mapDena <- toolGetMapping("technologyMapping_Dena.csv",
+                            type = "sectoral", where = "mredgebuildings")
+  salesSplit <- readSource("DenaGebaeudereport", subtype = "salesHeatingSystems") %>%
+    .mapToBRICK(mapDena, from = "tech", collapse = FALSE)
+
 
 
   # COMBINE --------------------------------------------------------------------
@@ -75,7 +84,7 @@ calcHeatingSystemSales <- function() {
 
 
 
-  # individual countries ====
+  ## individual countries ====
 
   ### AUT ####
   mapBMK <- toolGetMapping("technologyMapping_BMK.csv",
@@ -195,6 +204,11 @@ calcHeatingSystemSales <- function() {
   salesExtr["AUT", , "dihe"] <- sales["AUT", , "dihe"]
 
 
+  ## Split new construction and renovation ====
+browser()
+  salesTest <- .splitSales(salesExtr, salesSplit)
+
+
 
   # RETURN ---------------------------------------------------------------------
 
@@ -211,12 +225,12 @@ calcHeatingSystemSales <- function() {
 
 
 
-.mapToBRICK <- function(x, map, from, to = "technologyBRICK") {
+.mapToBRICK <- function(x, map, from, to = "technologyBRICK", collapse = TRUE) {
   out <- x %>%
     replace_non_finite(0) %>%
     toolAggregate(rel = map, from = from, to = to, dim = 3.1, partrel = TRUE,
                   verbosity = 3)
-  if (ndim(out) > 3) {
+  if (ndim(out) > 3 && collapse) {
     out <- collapseDim(out, 3.2)
   }
   getSets(out)[3] <- "hs"
@@ -281,4 +295,26 @@ calcHeatingSystemSales <- function() {
     out[] <- pmax(0, out)
   }
   return(out)
+}
+
+
+.splitSales <- function(x, xSplit) {
+  browser()
+  xSplit <- .toDf(xSplit)
+  xSplitSmooth <- xSplit %>%
+    group_by(across(-all_of(c("region", "value")))) %>%
+    summarise(value = sum(.data$value), .groups = "drop") %>%
+    group_by(.data$hs) %>%
+    mutate(.fit = list(lm(value ~ period, data = dplyr::cur_data())),
+           value = predict(.fit[[1]], newdata = data.frame(period = .data$period))) %>%
+    ungroup() %>%
+    select(-".fit")
+  test <- x %>%
+    .toDf() %>%
+    left_join(xSplit, by = c("region", "period", "hs"), suffix = c("", "Split")) %>%
+    left_join(xSplitSmooth, by = c("period", "hs", "build"), suffix = c("", "SplitSmooth")) %>%
+    mutate(ref = ifelse(is.na(.data$valueSplit),
+                        .data$valueSplitSmooth,
+                        .data$valueSplit),
+           .keep = "unused")
 }
