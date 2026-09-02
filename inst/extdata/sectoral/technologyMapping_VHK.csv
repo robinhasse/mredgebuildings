@@ -1,0 +1,12 @@
+﻿tech;hs;weight
+Floor Standing Gas Cond;gabo;1
+Floor Standing Gas Non-cond;gabo;1
+Jet Burner Cond;gabo;0.08
+Jet Burner Non-Cond;gabo;0.08
+Jet Burner Cond;libo;0.92
+Jet Burner Non-Cond;libo;0.92
+Wall Hung Gas Cond;gabo;1
+Wall H.Gas Cond+Floor Std Cyl.;gabo;1
+Wall Hung Gas Non-Cond;gabo;1
+Heat Pump Outside Air-Water;ehp1;1
+Heat Pump Ground source;ehp1;1
