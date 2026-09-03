@@ -29,7 +29,8 @@ calcHeatingCapacity <- function(swissFormular = FALSE) {
 
   if (swissFormular) {
     flh <- 2300 # in h/yr
-    ueDem <- calcOutput("UEdemand", aggregate = FALSE)
+    ueDem <- calcOutput("UEdemand", aggregate = FALSE) %>%
+      mselect(enduse = "space_heating", collapseNames = TRUE)
     heatCap <- ueDem / flh
   } else {
     # reference heating capacity from online tool (SFH, after 1994)
