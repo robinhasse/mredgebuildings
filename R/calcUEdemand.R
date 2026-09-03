@@ -28,14 +28,17 @@ calcUEdemand <- function(granularity = NULL) {
                           type = "sectoral", where = "brick")
 
   # Useful energy demand for space heating (kWh/yr/m2)
+  vars <- c("ENERGY|Useful energy demand|Space heating" = "space_heating",
+            "ENERGY|Useful energy demand|Domestic hot water" = "water_heating")
   ueDem <- readSource("Hotmaps") %>%
-    mselect(variable = "ENERGY|Useful energy demand|Space heating") %>%
+    mselect(variable = names(vars)) %>%
     toolCountryFillAvg(verbosity = 2) %>%
     as.quitte(na.rm = TRUE) %>%
+    mutate(variable = unname(vars[.data$variable])) %>%
     right_join(typMap, by = c(building = "typHotmaps")) %>%
     right_join(vinMap, by = c(bage = "vinHotmaps"),
                relationship = "many-to-many") %>%
-    select("region", "typ", "vin", "value") %>%
+    select("region", "typ", "vin", enduse = "variable", "value") %>%
     group_by(across(-all_of(c("value")))) %>%
     summarise(value = mean(.data$value), .groups = "drop")
 
@@ -48,7 +51,9 @@ calcUEdemand <- function(granularity = NULL) {
   # add dimension: building shell
   ueDem <- ueDem %>%
     cross_join(relDem) %>%
-    mutate(value = .data$value * .data$relDem) %>%
+    mutate(value = .data$value * case_match(.data$enduse,
+                                            "space_heating" ~ .data$relDem,
+                                            "water_heating" ~ 1)) %>%
     select(-"relDem")
 
   # convert to magpie object
