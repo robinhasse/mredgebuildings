@@ -34,7 +34,7 @@ calcUEdemand <- function(granularity = NULL) {
     mselect(variable = names(vars)) %>%
     toolCountryFillAvg(verbosity = 2) %>%
     as.quitte(na.rm = TRUE) %>%
-    mutate(variable = unname(vars[.data$variable])) %>%
+    mutate(variable = unname(vars[as.character(.data$variable)])) %>%
     right_join(typMap, by = c(building = "typHotmaps")) %>%
     right_join(vinMap, by = c(bage = "vinHotmaps"),
                relationship = "many-to-many") %>%
