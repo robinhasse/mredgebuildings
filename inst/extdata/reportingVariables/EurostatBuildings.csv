@@ -1,0 +1,52 @@
+variable;nrg_bal;siec;unit;factor
+FE|Residential;FC_OTH_HH_E;TOTAL;TJ;1.00E-06
+FE|Residential|Coal;FC_OTH_HH_E;SFF_P1000_S2000;TJ;1.00E-06
+FE|Residential|Gases;FC_OTH_HH_E;G3000;TJ;1.00E-06
+FE|Residential|Gases;FC_OTH_HH_E;R5300;TJ;1.00E-06
+FE|Residential|Liquids;FC_OTH_HH_E;O4000;TJ;1.00E-06
+FE|Residential|Solar thermal;FC_OTH_HH_E;RA410;TJ;1.00E-06
+FE|Residential|Ambient heat;FC_OTH_HH_E;RA600;TJ;1.00E-06
+FE|Residential|Biomass;FC_OTH_HH_E;R5110-5150_W6000RI;TJ;1.00E-06
+FE|Residential|Electricity;FC_OTH_HH_E;E7000;TJ;1.00E-06
+FE|Residential|Heat;FC_OTH_HH_E;H8000;TJ;1.00E-06
+FE|Residential|Space heating;FC_OTH_HH_E_SH;TOTAL;TJ;1.00E-06
+FE|Residential|Space heating|Coal;FC_OTH_HH_E_SH;SFF_P1000_S2000;TJ;1.00E-06
+FE|Residential|Space heating|Gases;FC_OTH_HH_E_SH;G3000;TJ;1.00E-06
+FE|Residential|Space heating|Gases;FC_OTH_HH_E_SH;R5300;TJ;1.00E-06
+FE|Residential|Space heating|Liquids;FC_OTH_HH_E_SH;O4000;TJ;1.00E-06
+FE|Residential|Space heating|Solar thermal;FC_OTH_HH_E_SH;RA410;TJ;1.00E-06
+FE|Residential|Space heating|Ambient heat;FC_OTH_HH_E_SH;RA600;TJ;1.00E-06
+FE|Residential|Space heating|Biomass;FC_OTH_HH_E_SH;R5110-5150_W6000RI;TJ;1.00E-06
+FE|Residential|Space heating|Electricity;FC_OTH_HH_E_SH;E7000;TJ;1.00E-06
+FE|Residential|Space heating|Heat;FC_OTH_HH_E_SH;H8000;TJ;1.00E-06
+FE|Residential|Water heating;FC_OTH_HH_E_WH;TOTAL;TJ;1.00E-06
+FE|Residential|Water heating|Coal;FC_OTH_HH_E_WH;SFF_P1000_S2000;TJ;1.00E-06
+FE|Residential|Water heating|Gases;FC_OTH_HH_E_WH;G3000;TJ;1.00E-06
+FE|Residential|Water heating|Gases;FC_OTH_HH_E_WH;R5300;TJ;1.00E-06
+FE|Residential|Water heating|Liquids;FC_OTH_HH_E_WH;O4000;TJ;1.00E-06
+FE|Residential|Water heating|Solar thermal;FC_OTH_HH_E_WH;RA410;TJ;1.00E-06
+FE|Residential|Water heating|Ambient heat;FC_OTH_HH_E_WH;RA600;TJ;1.00E-06
+FE|Residential|Water heating|Biomass;FC_OTH_HH_E_WH;R5110-5150_W6000RI;TJ;1.00E-06
+FE|Residential|Water heating|Electricity;FC_OTH_HH_E_WH;E7000;TJ;1.00E-06
+FE|Residential|Water heating|Heat;FC_OTH_HH_E_WH;H8000;TJ;1.00E-06
+FE|Residential|Space cooling;FC_OTH_HH_E_SC;TOTAL;TJ;1.00E-06
+FE|Residential|Space cooling|Coal;FC_OTH_HH_E_SC;SFF_P1000_S2000;TJ;1.00E-06
+FE|Residential|Space cooling|Gases;FC_OTH_HH_E_SC;G3000;TJ;1.00E-06
+FE|Residential|Space cooling|Gases;FC_OTH_HH_E_SC;R5300;TJ;1.00E-06
+FE|Residential|Space cooling|Liquids;FC_OTH_HH_E_SC;O4000;TJ;1.00E-06
+FE|Residential|Space cooling|Solar thermal;FC_OTH_HH_E_SC;RA410;TJ;1.00E-06
+FE|Residential|Space cooling|Biomass;FC_OTH_HH_E_SC;R5110-5150_W6000RI;TJ;1.00E-06
+FE|Residential|Space cooling|Electricity;FC_OTH_HH_E_SC;E7000;TJ;1.00E-06
+FE|Residential|Space cooling|Heat;FC_OTH_HH_E_SC;H8000;TJ;1.00E-06
+FE|Residential|Cooking;FC_OTH_HH_E_CK;TOTAL;TJ;1.00E-06
+FE|Residential|Cooking|Coal;FC_OTH_HH_E_CK;SFF_P1000_S2000;TJ;1.00E-06
+FE|Residential|Cooking|Gases;FC_OTH_HH_E_CK;G3000;TJ;1.00E-06
+FE|Residential|Cooking|Gases;FC_OTH_HH_E_CK;R5300;TJ;1.00E-06
+FE|Residential|Cooking|Liquids;FC_OTH_HH_E_CK;O4000;TJ;1.00E-06
+FE|Residential|Cooking|Solar thermal;FC_OTH_HH_E_CK;RA410;TJ;1.00E-06
+FE|Residential|Cooking|Ambient heat;FC_OTH_HH_E_CK;RA600;TJ;1.00E-06
+FE|Residential|Cooking|Biomass;FC_OTH_HH_E_CK;R5110-5150_W6000RI;TJ;1.00E-06
+FE|Residential|Cooking|Electricity;FC_OTH_HH_E_CK;E7000;TJ;1.00E-06
+FE|Residential|Cooking|Heat;FC_OTH_HH_E_CK;H8000;TJ;1.00E-06
+FE|Residential|Appliances and lighting;FC_OTH_HH_E_LE;TOTAL;TJ;1.00E-06
+FE|Residential|Appliances and lighting|Electricity;FC_OTH_HH_E_LE;E7000;TJ;1.00E-06
