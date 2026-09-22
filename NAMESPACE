@@ -106,126 +106,149 @@ import(mrcommonsenergy)
 import(mrdrivers)
 import(mrenergy)
 importFrom(climbed,getDegreeDays)
-importFrom(dplyr,"%>%")
-importFrom(dplyr,.data)
-importFrom(dplyr,across)
-importFrom(dplyr,all_of)
-importFrom(dplyr,anti_join)
-importFrom(dplyr,any_of)
-importFrom(dplyr,arrange)
-importFrom(dplyr,as_tibble)
-importFrom(dplyr,bind_rows)
-importFrom(dplyr,case_match)
-importFrom(dplyr,case_when)
-importFrom(dplyr,coalesce)
-importFrom(dplyr,cross_join)
-importFrom(dplyr,distinct)
-importFrom(dplyr,ends_with)
-importFrom(dplyr,everything)
-importFrom(dplyr,filter)
-importFrom(dplyr,full_join)
-importFrom(dplyr,group_by)
-importFrom(dplyr,group_modify)
-importFrom(dplyr,inner_join)
-importFrom(dplyr,last_col)
-importFrom(dplyr,lead)
-importFrom(dplyr,left_join)
-importFrom(dplyr,matches)
-importFrom(dplyr,mutate)
-importFrom(dplyr,n)
-importFrom(dplyr,pull)
-importFrom(dplyr,recode)
-importFrom(dplyr,reframe)
-importFrom(dplyr,relocate)
-importFrom(dplyr,rename)
-importFrom(dplyr,right_join)
-importFrom(dplyr,row_number)
-importFrom(dplyr,select)
-importFrom(dplyr,semi_join)
-importFrom(dplyr,slice)
-importFrom(dplyr,slice_max)
-importFrom(dplyr,summarise)
-importFrom(dplyr,syms)
-importFrom(dplyr,ungroup)
-importFrom(lme4,fixef)
-importFrom(lme4,lmer)
-importFrom(madrat,calcOutput)
-importFrom(madrat,getISOlist)
-importFrom(madrat,readSource)
-importFrom(madrat,toolAggregate)
-importFrom(madrat,toolCountry2isocode)
-importFrom(madrat,toolCountryFill)
-importFrom(madrat,toolGetMapping)
-importFrom(madrat,toolSubtypeSelect)
-importFrom(magclass,"getItems<-")
-importFrom(magclass,"getNames<-")
-importFrom(magclass,"getSets<-")
-importFrom(magclass,add_columns)
-importFrom(magclass,add_dimension)
-importFrom(magclass,as.magpie)
-importFrom(magclass,collapseDim)
-importFrom(magclass,complete_magpie)
-importFrom(magclass,dimReduce)
-importFrom(magclass,dimSums)
-importFrom(magclass,getItems)
-importFrom(magclass,getNames)
-importFrom(magclass,getSets)
-importFrom(magclass,mbind)
-importFrom(magclass,mselect)
-importFrom(magclass,new.magpie)
-importFrom(magclass,setNames)
-importFrom(magclass,setYears)
-importFrom(magclass,time_interpolate)
+importFrom(dplyr,
+  "%>%",
+  .data,
+  across,
+  all_of,
+  anti_join,
+  any_of,
+  arrange,
+  as_tibble,
+  bind_rows,
+  case_match,
+  case_when,
+  coalesce,
+  cross_join,
+  distinct,
+  ends_with,
+  everything,
+  filter,
+  full_join,
+  group_by,
+  group_modify,
+  inner_join,
+  last_col,
+  lead,
+  left_join,
+  matches,
+  mutate,
+  n,
+  pull,
+  recode,
+  reframe,
+  relocate,
+  rename,
+  right_join,
+  row_number,
+  select,
+  semi_join,
+  slice,
+  slice_max,
+  summarise,
+  syms,
+  ungroup
+)
+importFrom(lme4,
+  fixef,
+  lmer
+)
+importFrom(madrat,
+  calcOutput,
+  getISOlist,
+  readSource,
+  toolAggregate,
+  toolCountry2isocode,
+  toolCountryFill,
+  toolGetMapping,
+  toolSubtypeSelect
+)
+importFrom(magclass,
+  "getItems<-",
+  "getNames<-",
+  "getSets<-",
+  add_columns,
+  add_dimension,
+  as.magpie,
+  collapseDim,
+  complete_magpie,
+  dimReduce,
+  dimSums,
+  getItems,
+  getNames,
+  getSets,
+  mbind,
+  mselect,
+  new.magpie,
+  setNames,
+  setYears,
+  time_interpolate
+)
 importFrom(minpack.lm,nlsLM)
 importFrom(mrcommonsenergy,toolSplitBiomass)
 importFrom(openxlsx,read.xlsx)
-importFrom(purrr,map_dfr)
-importFrom(purrr,reduce)
+importFrom(purrr,
+  map_dfr,
+  reduce
+)
 importFrom(quadprog,solve.QP)
-importFrom(quitte,aggregate_map)
-importFrom(quitte,as.quitte)
-importFrom(quitte,calc_addVariable)
-importFrom(quitte,factor.data.frame)
-importFrom(quitte,getPeriods)
-importFrom(quitte,getRegs)
-importFrom(quitte,inline.data.frame)
-importFrom(quitte,interpolate_missing_periods)
-importFrom(quitte,removeColNa)
-importFrom(quitte,replace_column)
-importFrom(quitte,revalue.levels)
+importFrom(quitte,
+  aggregate_map,
+  as.quitte,
+  calc_addVariable,
+  factor.data.frame,
+  getPeriods,
+  getRegs,
+  inline.data.frame,
+  interpolate_missing_periods,
+  removeColNa,
+  replace_column,
+  revalue.levels
+)
 importFrom(readxl,read_xlsx)
-importFrom(rlang,":=")
-importFrom(rlang,.data)
-importFrom(rlang,syms)
-importFrom(stats,SSasymp)
-importFrom(stats,as.formula)
-importFrom(stats,coef)
-importFrom(stats,lm)
-importFrom(stats,median)
-importFrom(stats,na.omit)
-importFrom(stats,nls)
-importFrom(stats,nls.control)
-importFrom(stats,predict)
-importFrom(stats,pweibull)
-importFrom(stats,sigma)
-importFrom(stats,var)
+importFrom(rlang,
+  ":=",
+  .data,
+  syms
+)
+importFrom(stats,
+  SSasymp,
+  as.formula,
+  coef,
+  lm,
+  median,
+  na.omit,
+  nls,
+  nls.control,
+  predict,
+  pweibull,
+  sigma,
+  var
+)
 importFrom(stringr,word)
-importFrom(tibble,as_tibble)
-importFrom(tibble,deframe)
-importFrom(tidyr,complete)
-importFrom(tidyr,crossing)
-importFrom(tidyr,expand_grid)
-importFrom(tidyr,gather)
-importFrom(tidyr,pivot_longer)
-importFrom(tidyr,pivot_wider)
-importFrom(tidyr,replace_na)
-importFrom(tidyr,separate)
-importFrom(tidyr,spread)
-importFrom(tidyr,unite)
-importFrom(utils,capture.output)
-importFrom(utils,head)
-importFrom(utils,read.csv)
-importFrom(utils,read.csv2)
-importFrom(utils,tail)
-importFrom(utils,write.csv)
+importFrom(tibble,
+  as_tibble,
+  deframe
+)
+importFrom(tidyr,
+  complete,
+  crossing,
+  expand_grid,
+  gather,
+  pivot_longer,
+  pivot_wider,
+  replace_na,
+  separate,
+  separate_wider_delim,
+  spread,
+  unite
+)
+importFrom(utils,
+  capture.output,
+  head,
+  read.csv,
+  read.csv2,
+  tail,
+  write.csv
+)
 importFrom(zoo,rollmean)

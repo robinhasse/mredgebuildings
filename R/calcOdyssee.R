@@ -2,7 +2,7 @@
 #'
 #' @author Robin Hasse
 #'
-#' @importFRom madrat readSource toolGetMapping
+#' @importFrom madrat readSource toolGetMapping
 #' @importFrom magclass as.magpie
 #' @importFrom dplyr %>% .data mutate filter right_join select left_join matches
 #' @importFrom tidyr separate_wider_delim

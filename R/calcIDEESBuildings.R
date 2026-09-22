@@ -1,6 +1,6 @@
 #' Calculate Reporting variables from JRC IDEES
 #'
-#' @importFRom madrat readSource toolGetMapping toolCountryFill
+#' @importFrom madrat readSource toolGetMapping toolCountryFill
 #' @importFrom magclass mbind as.magpie mselect
 #' @importFrom dplyr %>% .data mutate filter all_of left_join group_by summarise
 #'   across right_join  select

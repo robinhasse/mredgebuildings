@@ -16,10 +16,10 @@
 #'
 #' @importFrom madrat readSource toolGetMapping
 #' @importFrom dplyr %>% .data filter mutate group_by across across summarise n
-#' anti_join bind_rows group_modify select full_join ungroup arrange right_join
-#' semi_join inner_join last_col relocate
+#'   anti_join bind_rows group_modify select full_join ungroup arrange semi_join
+#'   right_join inner_join last_col relocate
 #' @importFrom quitte as.quitte revalue.levels interpolate_missing_periods
-#' calc_addVariable getPeriods
+#'   calc_addVariable getPeriods
 #' @importFrom tidyr separate
 #' @importFrom zoo rollmean
 #' @importFrom stats pweibull
