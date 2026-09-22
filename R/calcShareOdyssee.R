@@ -22,7 +22,7 @@
 #' @importFrom madrat readSource toolCountryFill toolGetMapping
 #' @importFrom quitte as.quitte revalue.levels
 #' @importFrom dplyr filter %>% mutate group_by across all_of left_join
-#' summarise .data syms bind_rows pull
+#'   summarise .data syms bind_rows pull
 #' @importFrom tidyr separate replace_na complete
 #' @importFrom utils tail
 #' @importFrom mrcommonsenergy toolSplitBiomass

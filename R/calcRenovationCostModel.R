@@ -26,10 +26,10 @@
 #' @importFrom madrat readSource calcOutput
 #' @importFrom magclass mselect as.magpie getSets<- setNames collapseDim
 #' @importFrom dplyr %>% .data filter mutate select group_by summarise ungroup
-#' left_join group_modify reframe
+#'   left_join group_modify reframe
 #' @importFrom tidyr pivot_wider pivot_longer
 #' @importFrom quitte as.quitte calc_addVariable revalue.levels
-#' inline.data.frame
+#'   inline.data.frame
 #'
 #' @export
 
