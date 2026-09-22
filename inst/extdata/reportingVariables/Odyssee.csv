@@ -1,162 +1,162 @@
-variable;name;code;factor
-FE|Residential|Coal;Coal consumption of households;cmscfres;
-FE|Residential|Liquids;Oil products consumption of households;petcfres;
-FE|Residential|Gases;Natural gas consumption of households;gazcfres;
-FE|Residential|Heat;Heat consumption of households;vapcfres;
-FE|Residential|Electricity;Electricity consumption of households;elccfres;
-FE|Residential;Final energy consumption of households;toccfres;
-;Final energy consumption of households (with climatic corrections);toccfrescc;
-FE|Residential|Space heating|Coal;Coal consumption of households for space heating;cmscfreschf;
-FE|Residential|Space heating|Liquids;Oil products consumption of households for space heating;petcfreschf;
-FE|Residential|Space heating|Gases;Natural gas consumption of households for space heating;gazcfreschf;
-FE|Residential|Space heating|Heat;Heat consumption of households for space heating;vapcfreschf;
-FE|Residential|Space heating|Electricity;Electricity consumption of households for space heating;elccfreschf;
-FE|Residential|Space heating;Final energy consumption of households for space heating;toccfreschf;
-;Final energy consumption of households for space heating (with climatic corrections);toccfreschc;
-;Final consumption of other fuels for single-family dwellings for space heating;cmbcfmprchf;
-FE|Residential|SFH|Space heating|Electricity;Electricity consumption of single-family dwellings for space heating;elecfmprchf;
-FE|Residential|SFH|Space heating;Final energy consumption of single-family dwellings for space heating;toccfmprchf;
-;Final energy consumption of single-family dwellings for space heating (with climatic corrections);toccfmprchc;
-;Final consumption of other fuels for multi-family dwellings for space heating;cmbcfiprchf;
-FE|Residential|MFH|Space heating|Electricity;Electricity consumption of multi-family dwellings for space heating;elecfiprchf;
-FE|Residential|MFH|Space heating;Final energy consumption of multi-family dwellings for space heating;toccfiprchf;
-;Final energy consumption of multi-family dwellings for space heating (with climatic corrections);toccfiprchc;
-FE|Residential|Water heating|Coal;Coal consumption of households for water heating;cmscfresecs;
-FE|Residential|Water heating|Liquids;Oil products consumption of households for water heating;petcfresecs;
-FE|Residential|Water heating|Gases;Natural gas consumption of households for water heating;gazcfresecs;
-FE|Residential|Water heating|Heat;Heat consumption of households for water heating;vapcfresecs;
-FE|Residential|Water heating|Electricity;Electricity consumption of households for water heating;elccfresecs;
-FE|Residential|Water heating;Final energy consumption of households for water heating;toccfresecs;
-FE|Residential|Cooking|Coal;Coal consumption of households for cooking;cmscfrescui;
-FE|Residential|Cooking|Liquids;Oil products consumption of households for cooking;petcfrescui;
-FE|Residential|Cooking|Gases;Natural gas consumption of households for cooking;gazcfrescui;
-FE|Residential|Cooking|Heat;Electricity consumption of households for cooking;elccfrescui;
-FE|Residential|Cooking|Electricity;Renewable energy consumption of households for cooking;enccfrescui;
-FE|Residential|Cooking;Final energy consumption of households for cooking;toccfrescui;
-FE|Residential|Space cooling|Electricity;Electricity consumption of households for air cooling;elccfrescli;
-FE|Residential|Appliances and lighting|Electricity;Electricity consumption of households for electrical appliances and lighting;elccfresels;
-;Electricity consumption of households for electrical appliances;elccfresels1;
-;Electricity consumption of households for lighting;elccfreslgt;
-;Captive electricity consumption of households;elecfresels;
-;Electricity consumption of households for lighting;elecfreslgt;
-;Electricity consumption of households for air cooling;elecfrescli;
-;Electricity consumption of households for small appliances (calulated by difference);elecfressma;
-;Total stock of dwellings;nbrlog;
-Stock|Residential*facRes;Stock of permanently occupied dwellings;nbrlpr;1.00E-06
-Stock|Residential|SFH*facSFH;Stock of permanently occupied houses;nbrmpr;1.00E-06
-Stock|Residential|MFH*facMFH;Stock of permanently occupied multifamily dwellings;nbripr;1.00E-06
-;Stock of second residences;nbrres;
-Stock|Residential|Liquids*facRes;Stock of permanently occupied dwellings with oil space heating;nbrlprpet;1.00E-06
-Stock|Residential|Gases*facRes;Stock of permanently occupied dwellings with gas space heating;nbrlprgaz;1.00E-06
-Stock|Residential|Liquids*facRes;Stock of permanently occupied dwellings with district heating space heating;nbrlprvap;1.00E-06
-Stock|Residential|Heat*facRes;Stock of permanently occupied dwellings with wood space heating;nbrlprboi;1.00E-06
-Stock|Residential|Electricity*facRes;Stock of permanently occupied dwellings with electric space heating;nbrlprele;1.00E-06
-Stock|Residential|Electricity|Heat pump*facRes;Stock of permanently occupied dwellings with heat pump for space heating;nbrlprelehp;1.00E-06
-Stock|Residential|MFH|Liquids*facMFH;Stock of flats with oil space heating;nbriprpet;1.00E-06
-Stock|Residential|MFH|Gases*facMFH;Stock of flats with gas space heating;nbriprgaz;1.00E-06
-Stock|Residential|MFH|Heat*facMFH;Stock of flats with district heating space heating;nbriprvap;1.00E-06
-Stock|Residential|MFH|Biomass*facMFH;Stock of flats with wood space heating;nbriprboi;1.00E-06
-Stock|Residential|MFH|Electricity*facMFH;Stock of flats with electric space heating;nbriprele;1.00E-06
-Stock|Residential|MFH|Electricity|Heat pump*facMFH;Stock of permanently occupied flats with heat pumps for space heating;nbriprelehp;1.00E-06
-Stock|Residential|MFH|Liquids*facMFH;Stock of permanently occupied houses with oil space heating;nbrmprpet;1.00E-06
-Stock|Residential|MFH|Gases*facMFH;Stock of permanently occupied houses with gas space heating;nbrmprgaz;1.00E-06
-Stock|Residential|MFH|Heat*facMFH;Stock of permanently occupied houses with district heating space heating;nbrmprvap;1.00E-06
-Stock|Residential|MFH|Biomass*facMFH;Stock of permanently occupied houses with wood space heating;nbrmprboi;1.00E-06
-Stock|Residential|MFH|Electricity*facMFH;Stock of permanently occupied houses with electric space heating;nbrmprele;1.00E-06
-Stock|Residential|MFH|Electricity|Heat pump*facMFH;Stock of permanently occupied houses with heat pump for space heating;nbrmprelehp;1.00E-06
-;Stock of permanently occupied dwellings with collective central heating;nbrlprccc;
-;Stock of permanently occupied dwellings with individual central heating;nbrlprcci;
-;Stock of permanently occupied dwellings with room heating;nbrlprcdi;
-Construction|Residential*facResnew;Total construction of dwellings;nbrlpn;1.00E-06
-Construction|Residential|SFH*facSFHnew;Construction of single family dwellings;nbrmpn;1.00E-06
-Construction|Residential|MFH*facMFHnew;Construction of multifamily dwellings;nbripn;1.00E-06
-facRes;Floor area of dwellings (average);surlog;
-facSFH;Floor area of single family dwellings;surmpr;
-facMFH;Floor area of multifamily dwellings;suripr;
-facResnew;Floor area of new dwellings (average);surlpn;
-facSFHnew;Floor area of new singlefamily dwellings;surmpn;
-facMFHnew;Floor area of new multifamily dwellings;suripn;
-;Stock of refrigerators;nbrrfg;
-;Stock of freezers;nbrcgl;
-;Stock of washing machines;nbrlvl;
-;Stock of dishwashers;nbrlvv;
-;Stock of TVs;nbrtvs;
-;Refrigerators equimpent rate of households;teqrfg;
-;Freezers equimpent rate of households;teqcgl;
-;Washing machines equimpent rate of households;teqlvl;
-;Dishwashers equimpent rate of households;teqlvv;
-;TV ownership with multiequipment;teqtvsmult;
-;Air cooling equimpent rate of households;teqcli;
-;Dryers equimpent rate of households;teqscl;
-;Heating degree-days;dj;
-;Reference heating degree-days;djref;
-;Cooling degree-days;djcli;
-;Reference cooling degree-days;djrefcli;
-FE|Commercial|Coal;Coal consumption of services;cmscfter;
-FE|Commercial|Liquids;Oil products consumption of services;petcfter;
-FE|Commercial|Gases;Natural gas consumption of services;gazcfter;
-FE|Commercial|Heat;Heat consumption of services;vapcfter;
-FE|Commercial|Electricity;Electricity consumption of services;elccfter;
-FE|Commercial;Final energy consumption of services;toccfter;
-;Final energy consumption of services (with climatic corrections);toccftercc;
-;Electricity consumption of hotels and restaurants;elccfhcr;
-;Final energy consumption of hotels and restaurants;toccfhcr;
-;Electricity consumption of health and social work;elccfhos;
-;Final energy consumption of health and social work;toccfhos;
-;Electricity consumption of education and research;elccfedu;
-;Final energy consumption of education and research;toccfedu;
-;Electricity consumption of trade (wholesale and retail);elccfcom;
-;Final energy consumption of trade (wholesale and retail);toccfcom;
-;Electricity consumption of public and private offices;elccfbup;
-;Final consumption of public and private offices;toccfbup;
-;Electricity consumption of administrations;elccfgov;
-;Final energy consumption of administrations;toccfgov;
-;Electricity consumption of private offices;elccfbur;
-;Final consumption of offices;toccfbur;
-FE|Commercial|Space heating|Coal;Coal consumption of services for space heating;cmscfterchf;
-FE|Commercial|Space heating|Liquids;Oil products consumption of services for space heating;petcfterchf;
-FE|Commercial|Space heating|Gases;Natural gas consumption of services for space heating;gazcfterchf;
-FE|Commercial|Space heating|Heat;Heat consumption of services for space heating;vapcfterchf;
-FE|Commercial|Space heating|Electricity;Electricity consumption of services for space heating;elccfterchf;
-FE|Commercial|Space heating;Final energy consumption of services for space heating;toccfterchf;
-;Final energy consumption of services for space heating (with climatic corrections);toccfterchc;
-FE|Commercial|Water heating|Coal;Oil products consumption of services for hot water;petcfterecs;
-FE|Commercial|Water heating|Liquids;Coal consumption of services for water heating;cmscfterecs;
-FE|Commercial|Water heating|Gases;Natural gas consumption of services for hot water;gazcfterecs;
-FE|Commercial|Water heating|Heat;Heat consumption of services for hot water;vapcfterecs;
-FE|Commercial|Water heating|Electricity;Electricity consumption of services for water heating;elccfterecs;
-FE|Commercial|Water heating;Final energy consumption of services for hot water;toccfterecs;
-FE|Commercial|Cooking|Liquids;Oil products consumption of services for cooking;petcftercui;
-FE|Commercial|Cooking|Gases;Natural gas consumption of services for cooking;gazcftercui;
-FE|Commercial|Cooking|Electricity;Electricity consumption of services for cooking;elccftercui;
-FE|Commercial|Cooking;Final energy consumption of services for cooking;toccftercui;
-FE|Commercial|Space cooling|Electricity;Electricity consumption of services for air cooling;elccftercli;
-;Electricity consumption of services for lighting;elccfterlgt;
-;Final consumption of agriculture;toccfagr;
-;Coal consumption of agriculture;cmscfagr;
-;Oil products consumption of agriculture;petcfagr;
-;Natural gas consumption of agriculture;gazcfagr;
-;Heat consumption of agriculture;vapcfagr;
-;Renewable energy consumption of agriculture;enccfagr;
-;Electricity consumption of agriculture;elccfagr;
-;Value added of services at constant prices;vadterxx;
-;Value added of hotels and restaurants at constant prices;vadhcrxx;
-;Value added of health and social work at constant prices;vadhosxx;
-;Value added of education at constant prices;vadeduxx;
-;Value added of public and private offices at constant prices;vadbupxx;
-;Value added of private offices at constant prices;vadburxx;
-;Value added of trade at constant prices;vadcomxx;
-Stock|Commercial;Floor area of services;surter;1.00E-06
-;Floor area of hotels and restaurants;surhcr;
-;Floor area of health and social work;surhos;
-;Floor area of education and research;suredu;
-;Floor area of public and private offices;surbup;
-;Floor area of public offices and administrations;surgov;
-;Floor area of private offices;surbur;
-;Floor area of trade (wholesale and retail);surcom;
-;Employment of services;empter;
-;Employment of hotels and restaurants;emphcr;
-;Employment of health and social work;emphos;
-;Employment education and research;empedu;
-;Employment of public and private offices;empbup;
-;Employment of private offices;empbur;
+variable;name;code
+FE|Residential|Coal;Coal consumption of households;cmscfres
+FE|Residential|Liquids;Oil products consumption of households;petcfres
+FE|Residential|Gases;Natural gas consumption of households;gazcfres
+FE|Residential|Heat;Heat consumption of households;vapcfres
+FE|Residential|Electricity;Electricity consumption of households;elccfres
+FE|Residential;Final energy consumption of households;toccfres
+;Final energy consumption of households (with climatic corrections);toccfrescc
+FE|Residential|Space heating|Coal;Coal consumption of households for space heating;cmscfreschf
+FE|Residential|Space heating|Liquids;Oil products consumption of households for space heating;petcfreschf
+FE|Residential|Space heating|Gases;Natural gas consumption of households for space heating;gazcfreschf
+FE|Residential|Space heating|Heat;Heat consumption of households for space heating;vapcfreschf
+FE|Residential|Space heating|Electricity;Electricity consumption of households for space heating;elccfreschf
+FE|Residential|Space heating;Final energy consumption of households for space heating;toccfreschf
+;Final energy consumption of households for space heating (with climatic corrections);toccfreschc
+;Final consumption of other fuels for single-family dwellings for space heating;cmbcfmprchf
+FE|Residential|SFH|Space heating|Electricity;Electricity consumption of single-family dwellings for space heating;elecfmprchf
+FE|Residential|SFH|Space heating;Final energy consumption of single-family dwellings for space heating;toccfmprchf
+;Final energy consumption of single-family dwellings for space heating (with climatic corrections);toccfmprchc
+;Final consumption of other fuels for multi-family dwellings for space heating;cmbcfiprchf
+FE|Residential|MFH|Space heating|Electricity;Electricity consumption of multi-family dwellings for space heating;elecfiprchf
+FE|Residential|MFH|Space heating;Final energy consumption of multi-family dwellings for space heating;toccfiprchf
+;Final energy consumption of multi-family dwellings for space heating (with climatic corrections);toccfiprchc
+FE|Residential|Water heating|Coal;Coal consumption of households for water heating;cmscfresecs
+FE|Residential|Water heating|Liquids;Oil products consumption of households for water heating;petcfresecs
+FE|Residential|Water heating|Gases;Natural gas consumption of households for water heating;gazcfresecs
+FE|Residential|Water heating|Heat;Heat consumption of households for water heating;vapcfresecs
+FE|Residential|Water heating|Electricity;Electricity consumption of households for water heating;elccfresecs
+FE|Residential|Water heating;Final energy consumption of households for water heating;toccfresecs
+FE|Residential|Cooking|Coal;Coal consumption of households for cooking;cmscfrescui
+FE|Residential|Cooking|Liquids;Oil products consumption of households for cooking;petcfrescui
+FE|Residential|Cooking|Gases;Natural gas consumption of households for cooking;gazcfrescui
+FE|Residential|Cooking|Heat;Electricity consumption of households for cooking;elccfrescui
+FE|Residential|Cooking|Electricity;Renewable energy consumption of households for cooking;enccfrescui
+FE|Residential|Cooking;Final energy consumption of households for cooking;toccfrescui
+FE|Residential|Space cooling|Electricity;Electricity consumption of households for air cooling;elccfrescli
+FE|Residential|Appliances and lighting|Electricity;Electricity consumption of households for electrical appliances and lighting;elccfresels
+;Electricity consumption of households for electrical appliances;elccfresels1
+;Electricity consumption of households for lighting;elccfreslgt
+;Captive electricity consumption of households;elecfresels
+;Electricity consumption of households for lighting;elecfreslgt
+;Electricity consumption of households for air cooling;elecfrescli
+;Electricity consumption of households for small appliances (calulated by difference);elecfressma
+;Total stock of dwellings;nbrlog
+Stock|Residential*facRes;Stock of permanently occupied dwellings;nbrlpr
+Stock|Residential|SFH*facSFH;Stock of permanently occupied houses;nbrmpr
+Stock|Residential|MFH*facMFH;Stock of permanently occupied multifamily dwellings;nbripr
+;Stock of second residences;nbrres
+Stock|Residential|Liquids*facRes;Stock of permanently occupied dwellings with oil space heating;nbrlprpet
+Stock|Residential|Gases*facRes;Stock of permanently occupied dwellings with gas space heating;nbrlprgaz
+Stock|Residential|Heat*facRes;Stock of permanently occupied dwellings with district heating space heating;nbrlprvap
+Stock|Residential|Biomass*facRes;Stock of permanently occupied dwellings with wood space heating;nbrlprboi
+Stock|Residential|Electricity*facRes;Stock of permanently occupied dwellings with electric space heating;nbrlprele
+Stock|Residential|Electricity|Heat pump*facRes;Stock of permanently occupied dwellings with heat pump for space heating;nbrlprelehp
+Stock|Residential|MFH|Liquids*facMFH;Stock of flats with oil space heating;nbriprpet
+Stock|Residential|MFH|Gases*facMFH;Stock of flats with gas space heating;nbriprgaz
+Stock|Residential|MFH|Heat*facMFH;Stock of flats with district heating space heating;nbriprvap
+Stock|Residential|MFH|Biomass*facMFH;Stock of flats with wood space heating;nbriprboi
+Stock|Residential|MFH|Electricity*facMFH;Stock of flats with electric space heating;nbriprele
+Stock|Residential|MFH|Electricity|Heat pump*facMFH;Stock of permanently occupied flats with heat pumps for space heating;nbriprelehp
+Stock|Residential|SFH|Liquids*facMFH;Stock of permanently occupied houses with oil space heating;nbrmprpet
+Stock|Residential|SFH|Gases*facMFH;Stock of permanently occupied houses with gas space heating;nbrmprgaz
+Stock|Residential|SFH|Heat*facMFH;Stock of permanently occupied houses with district heating space heating;nbrmprvap
+Stock|Residential|SFH|Biomass*facMFH;Stock of permanently occupied houses with wood space heating;nbrmprboi
+Stock|Residential|SFH|Electricity*facMFH;Stock of permanently occupied houses with electric space heating;nbrmprele
+Stock|Residential|SFH|Electricity|Heat pump*facMFH;Stock of permanently occupied houses with heat pump for space heating;nbrmprelehp
+;Stock of permanently occupied dwellings with collective central heating;nbrlprccc
+;Stock of permanently occupied dwellings with individual central heating;nbrlprcci
+;Stock of permanently occupied dwellings with room heating;nbrlprcdi
+Construction|Residential*facResnew;Total construction of dwellings;nbrlpn
+Construction|Residential|SFH*facSFHnew;Construction of single family dwellings;nbrmpn
+Construction|Residential|MFH*facMFHnew;Construction of multifamily dwellings;nbripn
+facRes;Floor area of dwellings (average);surlog
+facSFH;Floor area of single family dwellings;surmpr
+facMFH;Floor area of multifamily dwellings;suripr
+facResnew;Floor area of new dwellings (average);surlpn
+facSFHnew;Floor area of new singlefamily dwellings;surmpn
+facMFHnew;Floor area of new multifamily dwellings;suripn
+;Stock of refrigerators;nbrrfg
+;Stock of freezers;nbrcgl
+;Stock of washing machines;nbrlvl
+;Stock of dishwashers;nbrlvv
+;Stock of TVs;nbrtvs
+;Refrigerators equimpent rate of households;teqrfg
+;Freezers equimpent rate of households;teqcgl
+;Washing machines equimpent rate of households;teqlvl
+;Dishwashers equimpent rate of households;teqlvv
+;TV ownership with multiequipment;teqtvsmult
+;Air cooling equimpent rate of households;teqcli
+;Dryers equimpent rate of households;teqscl
+;Heating degree-days;dj
+;Reference heating degree-days;djref
+;Cooling degree-days;djcli
+;Reference cooling degree-days;djrefcli
+FE|Commercial|Coal;Coal consumption of services;cmscfter
+FE|Commercial|Liquids;Oil products consumption of services;petcfter
+FE|Commercial|Gases;Natural gas consumption of services;gazcfter
+FE|Commercial|Heat;Heat consumption of services;vapcfter
+FE|Commercial|Electricity;Electricity consumption of services;elccfter
+FE|Commercial;Final energy consumption of services;toccfter
+;Final energy consumption of services (with climatic corrections);toccftercc
+;Electricity consumption of hotels and restaurants;elccfhcr
+;Final energy consumption of hotels and restaurants;toccfhcr
+;Electricity consumption of health and social work;elccfhos
+;Final energy consumption of health and social work;toccfhos
+;Electricity consumption of education and research;elccfedu
+;Final energy consumption of education and research;toccfedu
+;Electricity consumption of trade (wholesale and retail);elccfcom
+;Final energy consumption of trade (wholesale and retail);toccfcom
+;Electricity consumption of public and private offices;elccfbup
+;Final consumption of public and private offices;toccfbup
+;Electricity consumption of administrations;elccfgov
+;Final energy consumption of administrations;toccfgov
+;Electricity consumption of private offices;elccfbur
+;Final consumption of offices;toccfbur
+FE|Commercial|Space heating|Coal;Coal consumption of services for space heating;cmscfterchf
+FE|Commercial|Space heating|Liquids;Oil products consumption of services for space heating;petcfterchf
+FE|Commercial|Space heating|Gases;Natural gas consumption of services for space heating;gazcfterchf
+FE|Commercial|Space heating|Heat;Heat consumption of services for space heating;vapcfterchf
+FE|Commercial|Space heating|Electricity;Electricity consumption of services for space heating;elccfterchf
+FE|Commercial|Space heating;Final energy consumption of services for space heating;toccfterchf
+;Final energy consumption of services for space heating (with climatic corrections);toccfterchc
+FE|Commercial|Water heating|Coal;Oil products consumption of services for hot water;petcfterecs
+FE|Commercial|Water heating|Liquids;Coal consumption of services for water heating;cmscfterecs
+FE|Commercial|Water heating|Gases;Natural gas consumption of services for hot water;gazcfterecs
+FE|Commercial|Water heating|Heat;Heat consumption of services for hot water;vapcfterecs
+FE|Commercial|Water heating|Electricity;Electricity consumption of services for water heating;elccfterecs
+FE|Commercial|Water heating;Final energy consumption of services for hot water;toccfterecs
+FE|Commercial|Cooking|Liquids;Oil products consumption of services for cooking;petcftercui
+FE|Commercial|Cooking|Gases;Natural gas consumption of services for cooking;gazcftercui
+FE|Commercial|Cooking|Electricity;Electricity consumption of services for cooking;elccftercui
+FE|Commercial|Cooking;Final energy consumption of services for cooking;toccftercui
+FE|Commercial|Space cooling|Electricity;Electricity consumption of services for air cooling;elccftercli
+;Electricity consumption of services for lighting;elccfterlgt
+;Final consumption of agriculture;toccfagr
+;Coal consumption of agriculture;cmscfagr
+;Oil products consumption of agriculture;petcfagr
+;Natural gas consumption of agriculture;gazcfagr
+;Heat consumption of agriculture;vapcfagr
+;Renewable energy consumption of agriculture;enccfagr
+;Electricity consumption of agriculture;elccfagr
+;Value added of services at constant prices;vadterxx
+;Value added of hotels and restaurants at constant prices;vadhcrxx
+;Value added of health and social work at constant prices;vadhosxx
+;Value added of education at constant prices;vadeduxx
+;Value added of public and private offices at constant prices;vadbupxx
+;Value added of private offices at constant prices;vadburxx
+;Value added of trade at constant prices;vadcomxx
+Stock|Commercial;Floor area of services;surter
+;Floor area of hotels and restaurants;surhcr
+;Floor area of health and social work;surhos
+;Floor area of education and research;suredu
+;Floor area of public and private offices;surbup
+;Floor area of public offices and administrations;surgov
+;Floor area of private offices;surbur
+;Floor area of trade (wholesale and retail);surcom
+;Employment of services;empter
+;Employment of hotels and restaurants;emphcr
+;Employment of health and social work;emphos
+;Employment education and research;empedu
+;Employment of public and private offices;empbup
+;Employment of private offices;empbur
