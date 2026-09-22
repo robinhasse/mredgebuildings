@@ -5,7 +5,7 @@
 #' @importFrom madrat calcOutput
 #' @importFrom magclass mbind setNames
 
-calcFEBuilding <- function() {
+calcFEBuildings <- function() {
   fe <- calcOutput("FE", aggregate = FALSE)
   vars <- grep("Buildings", getItems(fe, 3), value = TRUE)
   fe <- fe[, , vars]
