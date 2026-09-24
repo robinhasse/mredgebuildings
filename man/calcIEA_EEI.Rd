@@ -4,7 +4,7 @@
 \alias{calcIEA_EEI}
 \title{Process data from IEA End Uses and Efficiency Indicators Database}
 \usage{
-calcIEA_EEI(subtype = c("buildings"), mixData = FALSE)
+calcIEA_EEI(subtype = c("buildings", "buildings_reporting"), mixData = FALSE)
 }
 \arguments{
 \item{subtype}{sector name}
