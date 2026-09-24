@@ -16,14 +16,15 @@
 #'
 #' @importFrom madrat readSource calcOutput toolGetMapping
 #' @importFrom dplyr filter group_by across all_of summarise mutate select pull
-#'   rename ungroup %>% .data
+#'   rename ungroup %>% .data recode_values right_join
 #' @importFrom tidyr replace_na
 #' @importFrom quitte revalue.levels as.quitte
-#' @importFrom magclass complete_magpie as.magpie
+#' @importFrom magclass complete_magpie as.magpie getItems<- collapseNames
+#'   getItems
 #' @importFrom mrcommonsenergy toolSplitBiomass
 
 
-calcIEA_EEI <- function(subtype = c("buildings"), #nolint object_name_linter
+calcIEA_EEI <- function(subtype = c("buildings", "buildings_reporting"), # nolint: object_name_linter.
                         mixData = FALSE) {
 
   # PARAMETERS -----------------------------------------------------------------
@@ -33,36 +34,39 @@ calcIEA_EEI <- function(subtype = c("buildings"), #nolint object_name_linter
   # energy unit conversion PJ -> EJ
   pj2ej <- 1e-3 #nolint object_name_linter
 
+  data <- readSource("IEA_EEI", convert = TRUE)
 
 
-  # READ-IN DATA ---------------------------------------------------------------
-
-  # IEA
-  data <- readSource("IEA_EEI", convert = TRUE) %>%
-    as.quitte()
-
-  # GDP per capita
-  gdppop <- calcOutput("GDPpc",
-                       scenario = "SSP2",
-                       average2020 = FALSE,
-                       aggregate = FALSE)
-
-  # enduse and carrier mapping
-  enduseMap <- toolGetMapping(name = "enduseMap_IEA-EEI.csv",
-                              type = "sectoral",
-                              where = "mredgebuildings") %>%
-    pull("EDGE", "IEA_EEI")
-
-  carrierMap <- toolGetMapping(name = "carrierMap_IEA-EEI.csv",
-                               type = "sectoral",
-                               where = "mredgebuildings") %>%
-    pull("EDGE", "IEA_EEI")
 
 
 
   # PROCESS DATA ---------------------------------------------------------------
 
   if (subtype == "buildings") {
+
+    data <- as.quitte(data)
+
+    ## get mappings ====
+
+    # GDP per capita
+    gdppop <- calcOutput("GDPpc",
+                         scenario = "SSP2",
+                         average2020 = FALSE,
+                         aggregate = FALSE)
+
+    # enduse and carrier mapping
+    enduseMap <- toolGetMapping(name = "enduseMap_IEA-EEI.csv",
+                                type = "sectoral",
+                                where = "mredgebuildings") %>%
+      pull("EDGE", "IEA_EEI")
+
+    carrierMap <- toolGetMapping(name = "carrierMap_IEA-EEI.csv",
+                                 type = "sectoral",
+                                 where = "mredgebuildings") %>%
+      pull("EDGE", "IEA_EEI")
+
+
+    ## aggregate ====
 
     dataAgg <- data %>%
       # filter residential and service data and do some pre-processing
@@ -103,6 +107,40 @@ calcIEA_EEI <- function(subtype = c("buildings"), #nolint object_name_linter
       as.magpie() %>%
       toolSplitBiomass(gdppop) %>%
       toolCountryFill(verbosity = 2)
+
+  } else if (subtype == "buildings_reporting") {
+
+    map <- toolGetMapping("IEA_EEI.csv", type = "reportingVariables",
+                          where = "mredgebuildings") %>%
+      select(-"comment") %>%
+      filter(.data$variable != "")
+
+    # map to reporting variables
+    data <- data %>%
+      as_tibble() %>%
+      right_join(map, by = c("ITEM", "ENDUSE")) %>%
+      group_by(across(all_of(c(region = "COUNTRY", period = "TIME", "variable")))) %>%
+      summarise(value = sum(.data$value), .groups = "drop") %>%
+      toolSumResCom() %>%
+      mutate(unit = recode_values(sub("^([^\\|]+)\\|.*$", "\\1", .data$variable),
+                                  "Emi"        ~ "Mt CO2/yr",
+                                  "FE"         ~ "PJ/yr",
+                                  "Stock"      ~ "bn m2",
+                                  "StockShare" ~ "bn m2"), # actually percent
+             .before = "value") %>%
+      as.magpie()
+
+    # compute floor space stock by space heating carrier
+    shares <- grep("StockShare", getItems(data, "variable"), value = TRUE)
+    data[, , shares] <- data[, , shares] / 100 * collapseNames(data[, , "Stock|Residential"])
+    getItems(data, "variable") <- sub("StockShare", "Stock", getItems(data, "variable"))
+
+    # unit conversion
+    data <- toolUnitConversion(data,
+                               inline.data.frame("from;      to;       factor",
+                                                 "Mt CO2/yr; MtCO2/yr; 1",
+                                                 "PJ/yr;     EJ/yr;    1e-3",
+                                                 "bn m2;     mn m2;    1e3"))
   }
 
 
