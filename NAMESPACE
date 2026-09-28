@@ -156,6 +156,7 @@ importFrom(lme4,
 )
 importFrom(madrat,
   calcOutput,
+  getConfig,
   getISOlist,
   readSource,
   toolAggregate,

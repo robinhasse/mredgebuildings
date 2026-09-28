@@ -38,8 +38,6 @@ calcIEA_EEI <- function(subtype = c("buildings", "buildings_reporting"), # nolin
 
 
 
-
-
   # PROCESS DATA ---------------------------------------------------------------
 
   if (subtype == "buildings") {
@@ -140,7 +138,8 @@ calcIEA_EEI <- function(subtype = c("buildings", "buildings_reporting"), # nolin
                                inline.data.frame("from;      to;       factor",
                                                  "Mt CO2/yr; MtCO2/yr; 1",
                                                  "PJ/yr;     EJ/yr;    1e-3",
-                                                 "bn m2;     mn m2;    1e3"))
+                                                 "bn m2;     mn m2;    1e3")) %>%
+      toolCountryFill(verbosity = 2)
   }
 
 
