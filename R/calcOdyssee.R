@@ -3,7 +3,7 @@
 #' @author Robin Hasse
 #'
 #' @importFrom madrat readSource toolGetMapping
-#' @importFrom magclass as.magpie
+#' @importFrom magclass as.magpie getItems getItems<-
 #' @importFrom dplyr %>% .data mutate filter right_join select left_join matches
 #' @importFrom tidyr separate_wider_delim
 #' @importFrom utils read.csv2
@@ -39,6 +39,8 @@ calcOdyssee <- function() {
     rbind(xMult) %>%
     toolSumResCom() %>%
     as.magpie()
+
+  getItems(x, "unit")[getItems(x, "unit") == "EJ"] <- "EJ/yr"
 
   return(list(x = x,
               min = 0,
