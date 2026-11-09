@@ -179,7 +179,7 @@ calcLTRS <- function(refGranularity = c("typ", "sec")) {
   hsShares <- switch(refGranularity,
     typ = rbind(
       # residential
-      calcOutput("MatchingReference", subtype = "OdysseeIDEES_heating", aggregate = FALSE) %>%
+      calcOutput("MatchingReference", subtype = "OdysseeIDEES_heating_typ", aggregate = FALSE) %>%
         .asDf(year = periodCensusHub) %>%
         .remap(mapOdysseeIDEESheating, value = "hsShare", normaliseBy = c("region", "period", "typ")),
       # commercial
