@@ -109,11 +109,10 @@ calcBuildingStock <- function(subtype = c("residential", "commercial"),
       group_by(across(all_of(c("region", "period")))) %>%
       filter(.data[["variable"]] %in% vars) %>%
       filter(n() == 2) %>%
-      summarise(value =
-                  .data[["value"]][.data[["variable"]] == varTotal] -
-                  .data[["value"]][.data[["variable"]] != varTotal],
-                variable = setdiff(vars, .data[["variable"]]),
-                .groups = "drop") %>%
+      reframe(value =
+                .data[["value"]][.data[["variable"]] == varTotal] -
+                .data[["value"]][.data[["variable"]] != varTotal],
+              variable = setdiff(vars, .data[["variable"]])) %>%
       bind_rows(outDf)
 
     dwellingTypeRatio <- outDf %>%
@@ -133,9 +132,8 @@ calcBuildingStock <- function(subtype = c("residential", "commercial"),
       select(-"value.x", -"value.y")
     dwellingTypeRatio <- dwellingTypeRatio %>%
       group_by(across(all_of(c("period", "variable")))) %>%
-      summarise(value = sum(.data[["value"]]),
-                region = setdiff(outDf$region, dwellingTypeRatio$region),
-                .groups = "drop") %>%
+      reframe(value = sum(.data[["value"]]),
+              region = setdiff(outDf$region, dwellingTypeRatio$region)) %>%
       rbind(dwellingTypeRatio) %>%
       group_by(across(all_of(c("period", "region")))) %>%
       mutate(value = proportions(.data[["value"]]),
@@ -424,10 +422,9 @@ calcBuildingStock <- function(subtype = c("residential", "commercial"),
         summarise(dwellings = sum(.data[["value"]]), .groups = "drop") %>%
         right_join(locationEubdb, by = c("region", "period")) %>%
         group_by(across(all_of(c("period", "variable")))) %>%
-        summarise(value = sum(.data[["value"]] * proportions(.data[["dwellings"]])),
-                  region = setdiff(stock$region, locationEubdb$region),
-                  unit = "1",
-                  .groups = "drop") %>%
+        reframe(value = sum(.data[["value"]] * proportions(.data[["dwellings"]])),
+                region = setdiff(stock$region, locationEubdb$region),
+                unit = "1") %>%
         rbind(locationEubdb) %>%
         mutate(location = gsub("dwellings_", "", .data[["variable"]])) %>%
         select(-"variable")
@@ -618,9 +615,8 @@ calcBuildingStock <- function(subtype = c("residential", "commercial"),
       # calculate shares (assume global average for missing regions)
       vintageShares <- dwellingVintages %>%
         group_by(across(all_of(c("period", "buildingType", "variable")))) %>%
-        summarise(value = sum(.data[["value"]]),
-                  region = setdiff(stock$region, dwellingVintages$region),
-                  .groups = "drop") %>%
+        reframe(value = sum(.data[["value"]]),
+                region = setdiff(stock$region, dwellingVintages$region)) %>%
         rbind(dwellingVintages) %>%
         group_by(across(all_of(c("region", "period", "buildingType")))) %>%
         mutate(value = proportions(.data[["value"]]),
@@ -740,12 +736,12 @@ calcBuildingStock <- function(subtype = c("residential", "commercial"),
                                     expand.values = TRUE)
       heatingShares <- dwellingHeating %>%
         group_by(across(all_of(c("period", "carrier")))) %>%
-        summarise(region = setdiff(stock$region, dwellingHeating$region),
-                  value = sum(.data[["value"]]),
-                  .groups = "drop") %>%
+        reframe(region = setdiff(stock$region, dwellingHeating$region),
+                value = sum(.data[["value"]])) %>%
         rbind(dwellingHeating) %>%
         group_by(across(all_of(c("region", "period")))) %>%
-        mutate(value = proportions(.data[["value"]]))
+        mutate(value = proportions(.data[["value"]])) %>%
+        ungroup()
       stock <- stock %>%
         left_join(heatingShares, by = c("region", "period"),
                   relationship = "many-to-many") %>%
@@ -790,9 +786,8 @@ calcBuildingStock <- function(subtype = c("residential", "commercial"),
         select("region", "period", hpBarometer = "value")
       hpNumber <- hpNumber %>%
         group_by(.data[["period"]]) %>%
-        summarise(hpBarometer = sum(.data[["hpBarometer"]], na.rm = TRUE),
-                  region = setdiff(heatPumps$region, hpNumber$region),
-                  .groups = "drop") %>%
+        reframe(hpBarometer = sum(.data[["hpBarometer"]], na.rm = TRUE),
+                region = setdiff(heatPumps$region, hpNumber$region)) %>%
         rbind(hpNumber)
 
       # extrapolate IDEES such that total follows stock and heat pumps follow
@@ -832,11 +827,10 @@ calcBuildingStock <- function(subtype = c("residential", "commercial"),
         ungroup()
       scopEurostat <- scopEurostat %>%
         group_by(across(all_of(c("period", "variable", "hpTech")))) %>%
-        summarise(value = ifelse(all(.data[["variable"]] == "CAP_HEAT"),
-                                 sum(.data[["value"]]),
-                                 mean(.data[["value"]][.data[["value"]] > 0])),
-                  region = c(setdiff(stock$region, scopEurostat$region), "GLO"),
-                  .groups = "drop") %>%
+        reframe(value = ifelse(all(.data[["variable"]] == "CAP_HEAT"),
+                               sum(.data[["value"]]),
+                               mean(.data[["value"]][.data[["value"]] > 0])),
+                region = c(setdiff(stock$region, scopEurostat$region), "GLO")) %>%
         rbind(scopEurostat)
       scopEurostat <- scopEurostat %>%
         spread("variable", "value") %>%
@@ -864,6 +858,10 @@ calcBuildingStock <- function(subtype = c("residential", "commercial"),
       # estimate UE share of HPs in electric space heating
       effResistElec <- 0.85
       hpShareElecHeating <- heatingEurostat %>%
+        group_by(across(-all_of(c("region", "value")))) %>%
+        reframe(value = sum(.data$value),
+                region = setdiff(stock$region, heatingEurostat$region)) %>%
+        rbind(heatingEurostat) %>%
         filter(.data[["carrier"]] %in% c("ambientHeat", "elec"),
                .data[["value"]] > 0) %>%
         select(-"unit") %>%
@@ -922,7 +920,8 @@ calcBuildingStock <- function(subtype = c("residential", "commercial"),
         mutate(value = proportions(.data[["value"]]),
                variable = "share") %>%
         group_by(.data[["region"]]) %>%
-        completeRollmean(3)
+        completeRollmean(3) %>%
+        ungroup()
       hpShare <- hpShareElecHeating %>%
         filter(!.data[["region"]] %in% regionsMatchingIDEES) %>%
         rename(heatpump = "value") %>%
@@ -970,9 +969,8 @@ calcBuildingStock <- function(subtype = c("residential", "commercial"),
         ungroup()
       sizeRatio <- sizeRatio %>%
         group_by(across(all_of(c("period", "variable")))) %>%
-        summarise(value = mean(.data[["value"]]),
-                  region = setdiff(dwellingSize$region, sizeRatio$region),
-                  .groups = "drop") %>%
+        reframe(value = mean(.data[["value"]]),
+                region = setdiff(dwellingSize$region, sizeRatio$region)) %>%
         bind_rows(sizeRatio) %>%
         ungroup()
 
